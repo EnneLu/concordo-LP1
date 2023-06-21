@@ -11,17 +11,17 @@ using namespace std;
 
 class CanalVoz : public Canal{
 	private:
-        Mensagem ultimaMensagem;
+                Mensagem ultimaMensagem;
 
 	public:
-        CanalVoz();
-        CanalVoz(Mensagem _ultimaMensagem);
-        ~CanalVoz();
+                CanalVoz();
+                CanalVoz(Mensagem _ultimaMensagem);
+                ~CanalVoz();
 
-        string getUltimaMensagem();
+        Mensagem getUltimaMensagem();
 
-    protected:
-        void setUltimaMensagem(Mensagem _ultimaMensagem);
+        protected:
+                void setUltimaMensagem(Mensagem _ultimaMensagem);
 };
 
 #endif

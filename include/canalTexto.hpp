@@ -10,18 +10,18 @@
 using namespace std;
 
 class CanalTexto : public Canal{
-	private:
-        vector<Mensagem> mensagens;
+        private:
+                vector<Mensagem> mensagens;
 
-	public:
-        CanalTexto();
-        CanalTexto(vector<Mensagem> _mensagens);
-        ~CanalTexto();
+        public:
+                CanalTexto();
+                CanalTexto(vector<Mensagem> _mensagens);
+                ~CanalTexto();
 
-        string getMensagens();
+        vector<Mensagem> getMensagens();
 
-    protected:
-        void setMensagens (vector<Mensagem> _mensagens);
+        protected:
+                void setMensagens (vector<Mensagem> _mensagens);
 };
 
 #endif
