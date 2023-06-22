@@ -29,7 +29,7 @@ int Servidor::getUsuarioDonoId(){return this->usuarioDonoId;}
 string Servidor::getNome(){return this->nome;}
 string Servidor::getDescricao(){return this->descricao;}
 string Servidor::getCodigoConvite(){return this->codigoConvite;}
-vector<Canal> Servidor::getCanais(){return this->canais;}
+vector<Canal*> Servidor::getCanais(){return this->canais;}
 vector<int> Servidor::getParticipantesIDs(){return this->participantesIDs;}
 
 void Servidor::setUsuarioDonoId(int _usuarioDonoId){if(_usuarioDonoId != 0) {this->usuarioDonoId = _usuarioDonoId;}}

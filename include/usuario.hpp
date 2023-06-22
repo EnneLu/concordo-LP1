@@ -23,6 +23,9 @@ class Usuario{
         string getEmail();
         string getSenha();
 
+        void buscarEmail(string _email);
+        void createUser(string _email, string _senha, string _nome); //id é automatico
+
     protected:
         void setId(int _id);
 		void setNome(string _nome);
