@@ -131,20 +131,20 @@ void Sistema::mudarDescricao(vector<string> _comandos){
 
 void Sistema::mudarCodigoConvite(vector<string> _comandos){
     string nome = _comandos[1];
-    string codigo = _comandos[2];
     if (this->buscarNomeServidor(nome) == true){ //Existe servidor com esse nome cadastrado
         for(int i = 0; i < servidores.size(); i++){ //pecorre o vetor de servidores
             if(servidores[i].getNome() == nome && this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ //procura o servidor que possui o nome informado e se o dono é o usuário logado               
                 if (_comandos.size() ==  2){
+                    string codigo = _comandos[2];
                     servidores[i].getCodigoConvite() = codigo;
                     cout << "Código de convite do servidor '" << _comandos[1] << "' modificado!" << endl;
                 } else{
-                    servidores[i].getCodigoConvite() = codigo;
+                    servidores[i].getCodigoConvite() = " ";
                     cout << "Código de convite do servidor '" << _comandos[1] << "' removido!" << endl;
                 }
-            } else {cout << "Você não pode alterar o código de um servidor que não foi criado por você" << endl;}    
-        } 
-    } else {cout << "Servidor '" << _comandos[1] << "' não existe" << endl;}     
+            } else {cout << "Você não pode alterar o código de um servidor que não foi criado por você" << endl;} 
+        }    
+    } else {cout << "Servidor '" << _comandos[1] << "' não existe" << endl;} 
 }
 
 string Sistema::listServidores(){
@@ -175,20 +175,19 @@ void Sistema::removeServidor(vector<string> _comandos){
 
 void Sistema::joinServidor(vector<string> _comandos){
     string nome = _comandos[1];
-    string codigo = _comandos[2];
-    if (this->buscarNomeServidor(nome) == true){ //Existe servidor com esse nome cadastrado
-        for(int i = 0; i < servidores.size(); i++){ //pecorre o vetor de servidores
-            if(codigo == " "){ //se o servidor for aberto qualquer usuário entra              
+    for(int i = 0; i < servidores.size(); i++){ //pecorre o vetor de servidores
+        if(servidores[i].getNome() == nome){
+            if(_comandos.size() ==  3){ //se o servidor for aberto qualquer usuário entra              
                 servidores[i].getParticipantesIDs().push_back(this->usuarioLogado.getId());
                 this->getServidorAtivo() = servidores[i];
                 cout << "Entrou no servidor com sucesso" << endl;
-            } else if(servidores[i].getCodigoConvite() == codigo || this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ //verifica se o código informado está correto ou se o usuário logado é o dono
+            } else if(servidores[i].getCodigoConvite() == _comandos[2] || this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ //verifica se o código informado está correto ou se o usuário logado é o dono                
                 servidores[i].getParticipantesIDs().push_back(this->usuarioLogado.getId());
                 this->getServidorAtivo() = servidores[i];
                 cout << "Entrou no servidor com sucesso" << endl;
-            } else {cout << "Servidor requer código de convite" << endl;} 
-        } 
-    } else {cout << "Servidor '" << _comandos[1] << "' não existe" << endl;}     
+            } else {cout << "Servidor requer código de convite" << endl;}
+        } else {cout << "Servidor '" << _comandos[1] << "' não existe" << endl;}
+    }     
 }
 
 void Sistema::leaveServidor(){

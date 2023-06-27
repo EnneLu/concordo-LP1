@@ -22,7 +22,7 @@ int main(){
             cout << "Criando usuário " << comandos[3] << "(" << comandos[1] << ")" << endl;
             sistema.novoUsuario(comandos); 
         } 
-        if (comandos[0] == "login"){
+        if (comandos[0] == "login"){     
             sistema.login(comandos);
             if(sistema.getUsuarioLogado().getId() != 0){
                 while(texto != "disconnect"){
@@ -35,8 +35,7 @@ int main(){
                         sistema.mudarDescricao(comandos);   
                     }
                     if (comandos[0] == "set-server-invite-code"){
-
-                        sistema.mudarCodigoConvite(comandos);   
+                        sistema.mudarCodigoConvite(comandos);
                     }
                     if (comandos[0] == "list-servers"){
                         cout << sistema.listServidores() << endl;   
