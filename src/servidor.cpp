@@ -14,16 +14,16 @@ Servidor::Servidor(int _usuarioDonoId, string _nome, string _descricao, string _
     this->canais = _canais;
     this->participantesIDs = _participantesIDs;
 }
-Servidor::~Servidor(){
+/*Servidor::~Servidor(){
     if (usuarioDonoId != 0 && nome !=  " " && descricao !=  " " && codigoConvite !=  " " && !canais.empty() && !participantesIDs.empty()){
         delete &usuarioDonoId;
         delete &nome;
         delete &descricao;
         delete &codigoConvite; 
-        delete &canais;
+        delete &canais;        
         delete &participantesIDs; 
     }   
-}
+}*/
 
 int Servidor::getUsuarioDonoId(){return this->usuarioDonoId;}
 string Servidor::getNome(){return this->nome;}

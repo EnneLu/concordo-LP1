@@ -7,7 +7,7 @@ CanalVoz::CanalVoz(Mensagem _ultimaMensagem){
     this->ultimaMensagem = _ultimaMensagem;
 }
 CanalVoz::~CanalVoz(){
-    delete &ultimaMensagem;
+    //delete &ultimaMensagem;
 }
 
 Mensagem CanalVoz::getUltimaMensagem(){return this->ultimaMensagem;}

@@ -7,9 +7,9 @@ CanalTexto::CanalTexto(vector<Mensagem> _mensagens){
     this->mensagens = _mensagens;
 }
 CanalTexto::~CanalTexto(){
-    if(!mensagens.empty()){
+ /*   if(!mensagens.empty()){
         delete &mensagens;
-    }
+    }*/
 }
 
 vector<Mensagem> CanalTexto::getMensagens(){return this->mensagens;}

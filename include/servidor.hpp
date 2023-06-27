@@ -21,7 +21,7 @@ class Servidor{
 	public:
         Servidor();
         Servidor(int _usuarioDonoId, string _nome, string _descricao, string _codigoConvite, vector<Canal *> _canais, vector<int> _participantesIDs);
-        ~Servidor();
+        //~Servidor();
 
         int getUsuarioDonoId();
         string getNome();
@@ -29,13 +29,6 @@ class Servidor{
         string getCodigoConvite();
         vector<Canal *> getCanais();
         vector<int> getParticipantesIDs();
-
-        void createServer(int _usuarioDonoId, string _nome, string _descricao, string _codigoConvite, vector<Canal *> _canais, vector<int> _participantesIDs);
-        void mudarDescricao(string _nome, string _novaDescricao);
-        void mudarCodigoConvite(string _nome, string _novoCodigoConvite);
-        void joinServidor();
-        void leaveServidor();
-        void listParticipantes();
 
     protected:
         void setUsuarioDonoId(int _usuarioDonoId);

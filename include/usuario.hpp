@@ -9,13 +9,13 @@ using namespace std;
 class Usuario{
 	private:
         int id;
-        string nome;
         string email;
         string senha;
+        string nome;
 
 	public:
         Usuario();
-        Usuario(int _id, string _nome, string _email, string _senha);
+        Usuario(int _id, string _email, string _senha, string _nome);
         ~Usuario();
 
         int getId();
@@ -23,14 +23,11 @@ class Usuario{
         string getEmail();
         string getSenha();
 
-        void buscarEmail(string _email);
-        void createUser(string _email, string _senha, string _nome); //id é automatico
-
     protected:
         void setId(int _id);
-		void setNome(string _nome);
         void setEmail(string _email);
         void setSenha(string _senha);
+		void setNome(string _nome);
 };
 
 #endif
