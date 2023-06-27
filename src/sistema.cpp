@@ -24,34 +24,32 @@ void Sistema::setUsuarioLogado(Usuario _usuarioLogado){this->usuarioLogado = _us
 void Sistema::setServidorAtivo(Servidor _servidorAtivo){this->servidorAtivo = _servidorAtivo;}
 void Sistema::setCanalAtivo(Canal _canalAtivo){this->canalAtivo = _canalAtivo;}
 
-void Sistema::leitor(string &_texto, vector<string>&_comandos){ //código louco que separa a string
-    string space_delimiter = " ";
-    size_t pos = 0;
-    while ((pos = _texto.find(space_delimiter)) != string::npos) { 
-        _comandos.push_back(_texto.substr(0, pos));
-        _texto.erase(0, pos + space_delimiter.length());
+//**FUNÇÕES TRATAMENTO TEXTO**//
+vector<string> Sistema::leitor(string &_texto){ //código louco que separa a string
+    vector<string> result;
+    istringstream iss(_texto);
+    string word;
+    
+    while (iss >> word) {
+        result.push_back(word);
     }
+    
+    return result;
 }
 
 //**FUNÇÕES DE USUÁRIO**//
 bool Sistema::buscarEmail(string _email){
-    for(int i = 0; i > usuarios.size(); i++){
+    for(int i = 0; i < usuarios.size(); i++){
         if(usuarios[i].getEmail() == _email){return true;}
     }
     return false;
 }
 
 void Sistema::novoUsuario(vector<string> _comandos){  
-    int id = 1, i = 0;
+    int id = usuarios.size()+1, i = 0;
     string email = _comandos[1];
     string senha = _comandos[2];
     string nome = _comandos[3];
-    /*for(i = 1; i >= usuarios.size(); i++){ //Gerador de ID
-        if(usuarios[i].getId() == id){
-            id++;
-        }
-    }*/
-   for (i = 3; i >= _comandos.size(); i++){nome = _comandos[i] + " ";}
     if (this->buscarEmail(email) == false){ //Não existe email cadastrado
         Usuario newUsuario(id, email, senha, nome);
         usuarios.push_back(newUsuario);
@@ -75,7 +73,7 @@ string Sistema::listUsuarios(){
 
 //**FUNÇÕES DE LOGIN**//
 bool Sistema::buscarUsuario(string _email, string _senha){
-    for(int i = 0; i > usuarios.size(); i++){
+    for(int i = 0; i < usuarios.size(); i++){
         if(usuarios[i].getEmail() == _email && usuarios[i].getSenha() == _senha){
             usuarioLogado = usuarios[i];
             return true;
@@ -97,7 +95,7 @@ void Sistema::disconnect(){
 
 //**FUNÇÕES DE SERVIDOR**//
 bool Sistema::buscarNomeServidor(string _nome){
-    for(int i = 0; i > servidores.size(); i++){
+    for(int i = 0; i < servidores.size(); i++){
         if(servidores[i].getNome() == _nome){return true;}
     }
     return false;
@@ -122,7 +120,7 @@ void Sistema::mudarDescricao(vector<string> _comandos){
     string nome = _comandos[1];
     string descricao = _comandos[2];
     if (this->buscarNomeServidor(nome) == true){ //Existe servidor com esse nome cadastrado
-        for(int i = 0; i > servidores.size(); i++){ //pecorre o vetor se servidores
+        for(int i = 0; i < servidores.size(); i++){ //pecorre o vetor se servidores
             if(servidores[i].getNome() == nome && this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ //procura o servidor que possui o nome informado e se o dono é o usuário logado
                 servidores[i].getDescricao() = descricao;
                 cout << "Descrição do servidor '" << _comandos[1] << "' modificada!" << endl;
@@ -135,9 +133,9 @@ void Sistema::mudarCodigoConvite(vector<string> _comandos){
     string nome = _comandos[1];
     string codigo = _comandos[2];
     if (this->buscarNomeServidor(nome) == true){ //Existe servidor com esse nome cadastrado
-        for(int i = 0; i > servidores.size(); i++){ //pecorre o vetor de servidores
+        for(int i = 0; i < servidores.size(); i++){ //pecorre o vetor de servidores
             if(servidores[i].getNome() == nome && this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ //procura o servidor que possui o nome informado e se o dono é o usuário logado               
-                if (codigo != " "){
+                if (_comandos.size() ==  2){
                     servidores[i].getCodigoConvite() = codigo;
                     cout << "Código de convite do servidor '" << _comandos[1] << "' modificado!" << endl;
                 } else{
@@ -153,7 +151,7 @@ string Sistema::listServidores(){
   vector<Servidor>::iterator it = servidores.begin();
   ostringstream output;
 
-  output << it->getNome();  // Percorre o vector redirecionando os nomes dos servidores para o objeto de saída
+  output << it->getNome() << endl;  // Percorre o vector redirecionando os nomes dos servidores para o objeto de saída
   ++it;
   while (it != servidores.end()) {
     output << it->getNome();
@@ -166,7 +164,7 @@ string Sistema::listServidores(){
 void Sistema::removeServidor(vector<string> _comandos){
     string nome = _comandos[1];
     if (this->buscarNomeServidor(nome) == true){ //Existe servidor com esse nome cadastrado
-        for(int i = 0; i > servidores.size(); i++){ //pecorre o vetor de servidores
+        for(int i = 0; i < servidores.size(); i++){ //pecorre o vetor de servidores
             if(servidores[i].getNome() == nome && this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ //procura o servidor que possui o nome informado e se o dono é o usuário logado               
                 servidores.erase(servidores.begin() + i);
                 cout << "Servidor '" << _comandos[1] << "' removido" << endl;
@@ -179,7 +177,7 @@ void Sistema::joinServidor(vector<string> _comandos){
     string nome = _comandos[1];
     string codigo = _comandos[2];
     if (this->buscarNomeServidor(nome) == true){ //Existe servidor com esse nome cadastrado
-        for(int i = 0; i > servidores.size(); i++){ //pecorre o vetor de servidores
+        for(int i = 0; i < servidores.size(); i++){ //pecorre o vetor de servidores
             if(codigo == " "){ //se o servidor for aberto qualquer usuário entra              
                 servidores[i].getParticipantesIDs().push_back(this->usuarioLogado.getId());
                 this->getServidorAtivo() = servidores[i];
@@ -203,7 +201,7 @@ void Sistema::leaveServidor(){
 
 string Sistema::buscarUsuarioId(int _id){
     string nome;
-    for(int i = 0; i > servidorAtivo.getParticipantesIDs().size(); i++){
+    for(int i = 0; i < servidorAtivo.getParticipantesIDs().size(); i++){
        if(usuarios[i].getId() == _id)
         nome = usuarios[i].getNome();
     }
@@ -212,7 +210,7 @@ string Sistema::buscarUsuarioId(int _id){
 
 void Sistema::listParticipantes(){
     string nome;
-    for(int i = 0; i > servidorAtivo.getParticipantesIDs().size(); i++){
+    for(int i = 0; i < servidorAtivo.getParticipantesIDs().size(); i++){
         nome = buscarUsuarioId(servidorAtivo.getParticipantesIDs()[i]);
         cout << nome << endl;
     }

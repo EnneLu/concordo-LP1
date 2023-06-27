@@ -10,34 +10,36 @@ using namespace std;
 
 int main(){
     Sistema sistema;
-    string texto = " ";
+    string texto = " ", separador;
     int i = 0;
     vector<string> comandos;
 
     while(texto != "quit"){
         comandos.clear();
         getline(cin, texto);
-        sistema.leitor(texto, comandos);
+        comandos = sistema.leitor(texto);
         if (comandos[0] == "create-user"){
             cout << "Criando usuário " << comandos[3] << "(" << comandos[1] << ")" << endl;
-            sistema.novoUsuario(comandos);   
-            cout << sistema.listUsuarios() << endl;
+            sistema.novoUsuario(comandos); 
         } 
         if (comandos[0] == "login"){
             sistema.login(comandos);
             if(sistema.getUsuarioLogado().getId() != 0){
                 while(texto != "disconnect"){
                     getline(cin, texto);
-                    sistema.leitor(texto, comandos);
+                    comandos = sistema.leitor(texto);   
                     if (comandos[0] == "create-server"){
                         sistema.novoServidor(comandos);   
-                        cout << sistema.listServidores() << endl;
                     }
                     if (comandos[0] == "set-server-desc"){
+                        sistema.mudarDescricao(comandos);   
+                    }
+                    if (comandos[0] == "set-server-invite-code"){
+
                         sistema.mudarCodigoConvite(comandos);   
                     }
                     if (comandos[0] == "list-servers"){
-                        sistema.listServidores();   
+                        cout << sistema.listServidores() << endl;   
                     }
                     if (comandos[0] == "remove-server"){
                         sistema.removeServidor(comandos);   
@@ -61,12 +63,3 @@ int main(){
 
     return 0;
 }
-
-/*
-create-user luennemafra15@gmail.com luenneGatinha123 luenne mafra 
-create-user luenne.mafra.017@ufrn.edu.br lMafra luenne.mafra.017
-login luennemafra15@gmail.com luenneGatinha1
-login luennemafra15@gmail.com luenneGatinha123
-
-else if(sistema.getUsuarioLogado().getId() != 0){
-*/

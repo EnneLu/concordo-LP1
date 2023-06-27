@@ -29,7 +29,7 @@ class Sistema{
         Servidor getServidorAtivo();
         Canal getCanalAtivo();
 
-        void leitor(string &_texto, vector<string>&_comandos); //Função responsável por separar a string de entrada
+        vector<string> leitor(string &_texto); //Função responsável por separar a string de entrada
 
         //**FUNÇÕES DE USUÁRIO**//
         bool buscarEmail(string _email); //busca na lista se já existe algum usuário com esse email
@@ -51,7 +51,7 @@ class Sistema{
 
         void joinServidor(vector<string> _comandos); //Entrar no servidor
         void leaveServidor(); //Sair do servidor
-        string buscarUsuarioId(int _id);
+        string buscarUsuarioId(int _id); //buscar nome do usuário utilizando id
         void listParticipantes(); //Listar participantes do servidor
 
     protected:
