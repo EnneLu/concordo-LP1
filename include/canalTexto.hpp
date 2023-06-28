@@ -9,19 +9,20 @@
 
 using namespace std;
 
+/** Classe de canais de texto que herda de canais*/
 class CanalTexto : public Canal{
         private:
-                vector<Mensagem> mensagens;
+                vector<Mensagem> mensagens; /**< Var vetor de mensagens de texto*/
 
         public:
-                CanalTexto();
-                CanalTexto(vector<Mensagem> _mensagens);
-                ~CanalTexto();
+                CanalTexto(); /**< Construtor zerar valores*/
+                CanalTexto(vector<Mensagem> _mensagens); /**< Construtor*/
+                ~CanalTexto(); /**< Destrutor*/
 
-        vector<Mensagem> getMensagens();
+        vector<Mensagem> getMensagens(); /**< Método get para acessar mensagens*/
 
         protected:
-                void setMensagens (vector<Mensagem> _mensagens);
+                void setMensagens (vector<Mensagem> _mensagens); /**< Método set para alterar valor das mensagens*/
 };
 
 #endif

@@ -6,25 +6,26 @@
 
 using namespace std;
 
+/** Classe de mensagem do sistema*/
 class Mensagem{
 	private:
-        string dataHora;
-        int enviadaPor;
-        string conteudo;
+        string dataHora; /**< Var data da mensagem*/
+        int enviadaPor; /**< Id do usuário que enviou*/
+        string conteudo; /**< Conteúdo da mensagem*/
 
 	public:
-        Mensagem();
-        Mensagem(string _dataHora, int _enviadaPor, string _conteudo);
-        ~Mensagem();
+        Mensagem(); /**< Construtor zerar valores*/
+        Mensagem(string _dataHora, int _enviadaPor, string _conteudo); /**< Construtor*/
+        ~Mensagem(); /**< Destrutor*/
 
-        string getDataHora();
-        int getEnviadaPor();
-		string getConteudo();
+        string getDataHora(); /**< Método get para acessar var dataHora*/
+        int getEnviadaPor(); /**< Método get para acessar var enviadaPor*/
+		string getConteudo(); /**< Método get para acessar var conteudo*/
 
     protected:
-        void setDataHora(string _dataHora);
-        void setEnviadaPor(int _enviadaPor);
-		void setConteudo(string _conteudo);
+        void setDataHora(string _dataHora); /**< Método set para alterar valor da var dataHora*/
+        void setEnviadaPor(int _enviadaPor); /**< Método set para alterar valor da var enviadaPor*/
+		void setConteudo(string _conteudo); /**< Método set para alterar valor da var conteudo*/
 };
 
 #endif

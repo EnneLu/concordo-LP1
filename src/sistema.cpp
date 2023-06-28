@@ -25,7 +25,9 @@ void Sistema::setServidorAtivo(Servidor _servidorAtivo){this->servidorAtivo = _s
 void Sistema::setCanalAtivo(Canal _canalAtivo){this->canalAtivo = _canalAtivo;}
 
 //**FUNÇÕES TRATAMENTO TEXTO**//
-vector<string> Sistema::leitor(string &_texto){ //código louco que separa a string
+
+/*Esta função recebe uma variável string e retorna um vector da própria divido por espaço*/
+vector<string> Sistema::leitor(string &_texto){ 
     vector<string> result;
     istringstream iss(_texto);
     string word;
@@ -38,14 +40,20 @@ vector<string> Sistema::leitor(string &_texto){ //código louco que separa a str
 }
 
 //**FUNÇÕES DE USUÁRIO**//
-bool Sistema::buscarEmail(string _email){
+
+/*Esta função recebe o email e percorre a var usuarios,
+ se encontrar retorna true, caso não encontre retorna false*/
+bool Sistema::buscarEmail(string _email){ 
     for(int i = 0; i < usuarios.size(); i++){
         if(usuarios[i].getEmail() == _email){return true;}
     }
     return false;
 }
 
-void Sistema::novoUsuario(vector<string> _comandos){  
+/*Esta função primeiro buscar se o email enviado por 
+o vector comandos já está cadastrado utilizando a função buscarEmail,
+caso não encontre realiza o cadastro do novo usuário na var usuarios */
+void Sistema::novoUsuario(vector<string> _comandos){ 
     int id = usuarios.size()+1, i = 0;
     string email = _comandos[1];
     string senha = _comandos[2];
@@ -57,21 +65,25 @@ void Sistema::novoUsuario(vector<string> _comandos){
     } else {cout << "Usuário já existe!" << endl;}
 }
 
+/*Esta função realiza a listagem de usuários cadastrados na ver usuarios*/
 string Sistema::listUsuarios(){
   vector<Usuario>::iterator it = usuarios.begin();
   ostringstream output;
 
-  output << it->getId() << endl << it->getEmail() << endl << it->getSenha() << endl << it->getNome();  // Percorre o vector redirecionando os nomes dos servidores para o objeto de saída
+  output << it->getId() << endl << it->getEmail() << endl << it->getSenha() << endl << it->getNome();
   ++it;
   while (it != usuarios.end()) {
     output << endl << it->getId() << endl << it->getEmail() << endl << it->getSenha() << endl << it->getNome();
     ++it;
   }
 
-  return output.str();  // Retorna o objeto ostringstream convertido para string
+  return output.str();
 }
 
 //**FUNÇÕES DE LOGIN**//
+
+/*Esta função recebe o email e senha do usuário, em percorre a var usuarios 
+buscando, caso encontre atualiza a var usuarioLogado para o objeto do vector usuarios correspondente*/
 bool Sistema::buscarUsuario(string _email, string _senha){
     for(int i = 0; i < usuarios.size(); i++){
         if(usuarios[i].getEmail() == _email && usuarios[i].getSenha() == _senha){
@@ -82,18 +94,24 @@ bool Sistema::buscarUsuario(string _email, string _senha){
     return false;
 }
 
+/*Esta função chama a função buscarUsuario, caso o retorno seja true informa sucesso no login,
+caso seja false informa mensagem de erro*/
 void Sistema::login(vector<string> _comandos){
     if(this->buscarUsuario(_comandos[1], _comandos[2]) == true){
         cout << "Logado como " << _comandos[1] << endl;
     } else {cout << "Senha ou usuário inválidos!" << endl;}
 }
 
+/*Esta função atualizar a var usuarioLogado para um objeto vazio*/
 void Sistema::disconnect(){
     Usuario usuarioVazio(0, " ", " ", " ");
     this->usuarioLogado = usuarioVazio;
 }
 
 //**FUNÇÕES DE SERVIDOR**//
+
+/*Esta função busca se existe um servidor com o nome informado no vector servidores,
+retorna true caso exista, false caso não exista*/
 bool Sistema::buscarNomeServidor(string _nome){
     for(int i = 0; i < servidores.size(); i++){
         if(servidores[i].getNome() == _nome){return true;}
@@ -101,6 +119,8 @@ bool Sistema::buscarNomeServidor(string _nome){
     return false;
 }
 
+/*Esta função chama a função buscarNomeServidor para verificar se existe um servidor
+ com o nome informado no vector servidores, caso não exista realiza o cadastro e insere no vector servidores*/
 void Sistema::novoServidor(vector<string> _comandos){
     int usuarioDonoId = this->usuarioLogado.getId();
     string nome = _comandos[1];
@@ -116,12 +136,15 @@ void Sistema::novoServidor(vector<string> _comandos){
     } else {cout << "Servidor com esse nome já existe" << endl;}    
 }
 
+/*Esta função chama a função buscarNomeServidor para verificar se existe um servidor
+ com o nome informado no vector servidores, caso exista busca qual o servidor no vector de servidores
+ e atualiza sua descrição verificando também se a var usuarioLogado é o dono do servidor*/
 void Sistema::mudarDescricao(vector<string> _comandos){
     string nome = _comandos[1];
     string descricao = _comandos[2];
     if (this->buscarNomeServidor(nome) == true){ //Existe servidor com esse nome cadastrado
         for(int i = 0; i < servidores.size(); i++){ //pecorre o vetor se servidores
-            if(servidores[i].getNome() == nome && this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ //procura o servidor que possui o nome informado e se o dono é o usuário logado
+            if(servidores[i].getNome() == nome && this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){
                 servidores[i].getDescricao() = descricao;
                 cout << "Descrição do servidor '" << _comandos[1] << "' modificada!" << endl;
             } else {cout << "Você não pode alterar a descrição de um servidor que não foi criado por você" << endl;}    
@@ -129,11 +152,14 @@ void Sistema::mudarDescricao(vector<string> _comandos){
     } else {cout << "Servidor '" << _comandos[1] << "' não existe" << endl;} 
 }
 
+/*Esta função chama a função buscarNomeServidor para verificar se existe um servidor
+ com o nome informado no vector servidores, caso exista busca qual o servidor no vector de servidores
+ e atualiza seu código de convite verificando também se a var usuarioLogado é o dono do servidor*/
 void Sistema::mudarCodigoConvite(vector<string> _comandos){
     string nome = _comandos[1];
     if (this->buscarNomeServidor(nome) == true){ //Existe servidor com esse nome cadastrado
         for(int i = 0; i < servidores.size(); i++){ //pecorre o vetor de servidores
-            if(servidores[i].getNome() == nome && this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ //procura o servidor que possui o nome informado e se o dono é o usuário logado               
+            if(servidores[i].getNome() == nome && this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ 
                 if (_comandos.size() ==  2){
                     string codigo = _comandos[2];
                     servidores[i].getCodigoConvite() = codigo;
@@ -147,6 +173,7 @@ void Sistema::mudarCodigoConvite(vector<string> _comandos){
     } else {cout << "Servidor '" << _comandos[1] << "' não existe" << endl;} 
 }
 
+/*Esta função lista os servidores no vector servidores*/
 string Sistema::listServidores(){
   vector<Servidor>::iterator it = servidores.begin();
   ostringstream output;
@@ -161,10 +188,12 @@ string Sistema::listServidores(){
   return output.str();  // Retorna o objeto ostringstream convertido para string
 }
 
+/*Esta função chama a função buscarNomeServidor para verificar se existe um servidor
+ com o nome informado no vector servidores, caso exista realiza a exclusão no vector*/
 void Sistema::removeServidor(vector<string> _comandos){
     string nome = _comandos[1];
-    if (this->buscarNomeServidor(nome) == true){ //Existe servidor com esse nome cadastrado
-        for(int i = 0; i < servidores.size(); i++){ //pecorre o vetor de servidores
+    if (this->buscarNomeServidor(nome) == true){
+        for(int i = 0; i < servidores.size(); i++){
             if(servidores[i].getNome() == nome && this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ //procura o servidor que possui o nome informado e se o dono é o usuário logado               
                 servidores.erase(servidores.begin() + i);
                 cout << "Servidor '" << _comandos[1] << "' removido" << endl;
@@ -173,9 +202,14 @@ void Sistema::removeServidor(vector<string> _comandos){
     } else {cout << "Servidor '" << _comandos[1] << "' não encontrado" << endl;}      
 }
 
+//**FUNÇÕES DENTRO DO SERVIDOR**//
+
+/*Esta função percorre o vector de servidores buscando se o nome informado existe,
+caso sim verifica se o usuário informou o código, caso sim insere o usuário na lista de participantes
+e atualiza a var servidorAtivo para o objeto servidor*/
 void Sistema::joinServidor(vector<string> _comandos){
     string nome = _comandos[1];
-    for(int i = 0; i < servidores.size(); i++){ //pecorre o vetor de servidores
+    for(int i = 0; i < servidores.size(); i++){
         if(servidores[i].getNome() == nome){
             if(_comandos.size() ==  3){ //se o servidor for aberto qualquer usuário entra              
                 servidores[i].getParticipantesIDs().push_back(this->usuarioLogado.getId());
@@ -190,6 +224,7 @@ void Sistema::joinServidor(vector<string> _comandos){
     }     
 }
 
+/*Esta função verifica se a var servidorAtivo está vazio, caso não esteja preenche com um objeto servidor vazio*/
 void Sistema::leaveServidor(){
     if(servidorAtivo.getUsuarioDonoId() != 0){
         Servidor servidorVazio(0, " ", " ", " ", { }, { });
@@ -198,6 +233,7 @@ void Sistema::leaveServidor(){
     } else {cout << "Você não está visualizando nenhum servidor" << endl;} 
 }
 
+/*Esta função busca o nome do usuário de acordo com seu id e retorna o nome*/
 string Sistema::buscarUsuarioId(int _id){
     string nome;
     for(int i = 0; i < servidorAtivo.getParticipantesIDs().size(); i++){
@@ -207,6 +243,8 @@ string Sistema::buscarUsuarioId(int _id){
     return nome;
 }
 
+/*Esta função chama a função buscarUsuarioId para cada id presente no vector participantes Id
+em seguida informa o nome*/
 void Sistema::listParticipantes(){
     string nome;
     for(int i = 0; i < servidorAtivo.getParticipantesIDs().size(); i++){

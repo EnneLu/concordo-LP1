@@ -10,56 +10,59 @@
 
 using namespace std;
 
+/** Classe sistema que possui todas as funções necessárias para execução do programa*/
 class Sistema{
-	private:
-		vector<Usuario> usuarios;
-        vector<Servidor> servidores;
-        Usuario usuarioLogado;
-        Servidor servidorAtivo;
-        Canal canalAtivo;
+	private: 
+		vector<Usuario> usuarios; /**< Var vetor de usuários cadastrados no sistema*/
+        vector<Servidor> servidores; /**< Var vetor de servidores cadastrados no sistema*/
+        Usuario usuarioLogado; /**< Var objeto que indica qual usuário está logado*/
+        Servidor servidorAtivo; /**< Var objeto que indica qual servidor está ativo*/
+        Canal canalAtivo; /**< Var objeto que indica qual canal está ativo*/
 
 	public:
-        Sistema();
-        Sistema(vector<Usuario> _usuarios, vector<Servidor> _servidores, Usuario _usuarioLogado, Servidor _servidorAtivo, Canal _canalAtivo);
-        //~Sistema();
+        Sistema(); /**< Construtor zerar valores*/
+        Sistema(vector<Usuario> _usuarios, vector<Servidor> _servidores, Usuario _usuarioLogado, Servidor _servidorAtivo, Canal _canalAtivo); /**< Construtor*/
+        //~Sistema(); /**< Destrutor*/
 
-		vector<Usuario> getUsuarios();
-        vector<Servidor> getServidores();
-        Usuario getUsuarioLogado();
-        Servidor getServidorAtivo();
-        Canal getCanalAtivo();
+		vector<Usuario> getUsuarios(); /**< Método get para acessar var usuarios*/
+        vector<Servidor> getServidores(); /**< Método get para acessar var servidores*/
+        Usuario getUsuarioLogado(); /**< Método get para acessar var usuarioLogado*/
+        Servidor getServidorAtivo(); /**< Método get para acessar var servidorAtivo*/
+        Canal getCanalAtivo(); /**< Método get para acessar var canalAtivo*/
 
-        vector<string> leitor(string &_texto); //Função responsável por separar a string de entrada
+        ///**FUNÇÕES TRATAMENTO TEXTO**//
+        vector<string> leitor(string &_texto); /**< Função responsável por separar string recebida no getline em um vector*/
 
         //**FUNÇÕES DE USUÁRIO**//
-        bool buscarEmail(string _email); //busca na lista se já existe algum usuário com esse email
-        void novoUsuario(vector<string> _comandos); //buscar se email ja existe, se não cria novo
-        string listUsuarios(); //Listar usuários cadastrados
+        bool buscarEmail(string _email); /**< Função responsável por busca na lista de usuários se já existe algum usuário com esse email*/
+        void novoUsuario(vector<string> _comandos); /**< Função responsável criar novo usuário, primeiro o sistema busca se já existe email cadastrado, caso não, cadastra novo usuário*/
+        string listUsuarios(); /**< Função responsável por listar usuários presentes no sistema. Está função não está presente no main, serve como auxílio*/
 
         //**FUNÇÕES DE LOGIN**//
-        bool buscarUsuario(string _email, string _senha); //buscar ID usuário
-        void login(vector<string> _comandos); //busca ID e atualizar usuarioLogado para o ID do usuário
-        void disconnect(); //Desconectar usuário do sistema
+        bool buscarUsuario(string _email, string _senha); /**< Função responsável por busca se existe id do usuário de acordo com seu email e senha, caso sim, atualizar a var usuarioLogado*/
+        void login(vector<string> _comandos); /**< Função responsável por realizar o login do usuário no servidor de acordo com o resultado da função buscarUsuario. Esta função serve apenas como verificador se houve sucesso no login*/
+        void disconnect(); /**< Função responsável por desconectar o usuário do sistema*/
 
         //**FUNÇÕES DE SERVIDOR**//
-        bool buscarNomeServidor(string _nome); //buscar nome do servidor
-        void novoServidor(vector<string> _comandos); //buscar nome, caso não exista cadastrar novo servidor
-        void mudarDescricao(vector<string> _comandos); //Mudar descrição se ele for seu
-        void mudarCodigoConvite(vector<string> _comandos); //Mudar código de convite
-        string listServidores(); //Listar servidores cadastrados
-        void removeServidor(vector<string> _comandos); //Remover servidor
+        bool buscarNomeServidor(string _nome); /**< Função responsável por buscar se existe servidor com esse nome*/
+        void novoServidor(vector<string> _comandos); /**< Função responsável por buscar se existe servidor com esse nome, caso não exista realiza o cadastro*/
+        void mudarDescricao(vector<string> _comandos); /**< Função responsável por mudar a descrição do servidor*/
+        void mudarCodigoConvite(vector<string> _comandos); /**< Função responsável por mudar o código de convite do servidor*/
+        string listServidores(); /**< Listar servidores cadastrados*/
+        void removeServidor(vector<string> _comandos); /**< Remover servidor da lista de servidores*/
 
-        void joinServidor(vector<string> _comandos); //Entrar no servidor
-        void leaveServidor(); //Sair do servidor
-        string buscarUsuarioId(int _id); //buscar nome do usuário utilizando id
-        void listParticipantes(); //Listar participantes do servidor
+        //**FUNÇÕES DENTRO DO SERVIDOR**//
+        void joinServidor(vector<string> _comandos); /**< Entrar no servidor, verifica se existe servidor com o nome informado e verifica o código do servidor */
+        void leaveServidor(); /**< Desconecta do servidor e muda a variável servidorAtivo para um objeto vazio*/
+        string buscarUsuarioId(int _id); /**< Buscar nome do usuário utilizando id*/
+        void listParticipantes(); /**< Busca o nome do usuário de acordo com o id presente na var IdParticipantes da classe Servidor e realiza a listagem*/
 
     protected:
-		void setUsuarios(vector<Usuario> _usuarios);
-        void setServidores(vector<Servidor> _servidores);
-        void setUsuarioLogado(Usuario _usuarioLogado);
-        void setServidorAtivo(Servidor _servidorAtivo);
-        void setCanalAtivo(Canal _canalAtivo);
+		void setUsuarios(vector<Usuario> _usuarios); /**< Método set para alterar valor da var usuarios*/
+        void setServidores(vector<Servidor> _servidores); /**< Método set para alterar valor da var servidores*/
+        void setUsuarioLogado(Usuario _usuarioLogado); /**< Método set para alterar valor da var usuarioLogado*/
+        void setServidorAtivo(Servidor _servidorAtivo); /**< Método set para alterar valor da var servidorAtivo*/
+        void setCanalAtivo(Canal _canalAtivo); /**< Método set para alterar valor da var canalAtivo*/
 };
 
 #endif
