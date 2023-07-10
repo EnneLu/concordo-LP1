@@ -15,11 +15,12 @@ class CanalVoz : public Canal{
                 Mensagem ultimaMensagem; /**< Var vetor de mensagens de texto*/
 
 	public:
-                CanalVoz(); /**< Construtor zerar valores*/
-                CanalVoz(Mensagem _ultimaMensagem); /**< Construtor*/
+                CanalVoz(string _nome); /**< Construtor*/
                 ~CanalVoz(); /**< Destrutor*/
 
         Mensagem getUltimaMensagem(); /**< Método get para acessar a última mensagem*/
+        void enviarMensagem(string _mensagem);
+        string imprimirMensagem();
 
         protected:
                 void setUltimaMensagem(Mensagem _ultimaMensagem); /**< Método set para alterar valor da var última mensagem*/

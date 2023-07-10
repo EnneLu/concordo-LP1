@@ -31,6 +31,11 @@ class Servidor{
         vector<Canal *> getCanais(); /**< Método get para acessar var canais*/
         vector<int> getParticipantesIDs(); /**< Método get para acessar var participantesIDs*/
 
+        void mudarDescricao(string _newDescricao); /**< Função responsável por mudar a descrição do servidor*/
+        void mudarCodigoConvite(string _newCodigo); /**< Função responsável por mudar o código de convite do servidor*/
+        string buscarUsuarioId(int _id); /**< Buscar nome do usuário utilizando id*/
+        void listParticipantes(); /**< Busca o nome do usuário de acordo com o id presente na var IdParticipantes da classe Servidor e realiza a listagem*/
+
     protected:
         void setUsuarioDonoId(int _usuarioDonoId); /**< Método set para alterar valor da var usuarioDonoId*/
         void setNome(string _nome); /**< Método set para alterar valor da var nome*/

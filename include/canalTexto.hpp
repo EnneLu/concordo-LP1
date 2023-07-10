@@ -15,11 +15,12 @@ class CanalTexto : public Canal{
                 vector<Mensagem> mensagens; /**< Var vetor de mensagens de texto*/
 
         public:
-                CanalTexto(); /**< Construtor zerar valores*/
-                CanalTexto(vector<Mensagem> _mensagens); /**< Construtor*/
+                CanalTexto(string _nome); /**< Construtor*/
                 ~CanalTexto(); /**< Destrutor*/
 
         vector<Mensagem> getMensagens(); /**< Método get para acessar mensagens*/
+        void enviarMensagem(string _mensagem);
+        string imprimirMensagem();
 
         protected:
                 void setMensagens (vector<Mensagem> _mensagens); /**< Método set para alterar valor das mensagens*/
