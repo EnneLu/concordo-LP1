@@ -67,6 +67,7 @@ void Sistema::salvarUsuarios(){
     usuArq.close();
 }
 void Sistema::salvarServidores(){
+    
     ofstream serviArq("servidores.txt");
     // Imprime a quantidade de servidores
     int s = servidores.size();
@@ -91,9 +92,9 @@ void Sistema::salvarServidores(){
         for (int j = 0; j < canais.size(); j++) {
             serviArq << canais[j]->getNome() << endl;
             if(canais[j]->tipoClasse() == "texto"){
-                tipo = "texto";
+                tipo = "TEXTO";
             } else if(canais[j]->tipoClasse() == "voz"){
-                tipo = "voz";
+                tipo = "VOZ";
             }
             serviArq << tipo << endl;
 
@@ -173,7 +174,7 @@ void Sistema::carregarServidores(){
     servidores.clear();
 
     // Lê a quantidade de servidores e converte para size_t
-    serviArq >> size; 
+    getline(serviArq, size);
     s = stoi(size);
     
     // Percorre o arquivo capturando os atributos dos servidores
@@ -188,12 +189,6 @@ void Sistema::carregarServidores(){
       
       // Cria um novo servidor e seta os atributos
       Servidor newServidor(intId, nome, descricao, codigoConvite, { }, { });
-      newServidor.mudarDescricao(&servidores[i], descricao);
-      if (codigoConvite != " ") {
-        newServidor.mudarCodigoConvite(&servidores[i], codigoConvite);
-      } else {
-        newServidor.mudarCodigoConvite(&servidores[i], codigoConvite);
-      }
 
       // Obtém a quantidade de usuários
       getline(serviArq, size);
@@ -217,9 +212,9 @@ void Sistema::carregarServidores(){
 
         // Cria um novo canal com o tipo informado
         Canal *newCanal;
-        if(tipoCanal == "texto"){
+        if(tipoCanal == "TEXTO"){
             newCanal = new CanalTexto(nomeCanal);
-        } else if(tipoCanal == "voz"){
+        } else if(tipoCanal == "VOZ"){
             newCanal = new CanalVoz(nomeCanal);
         }
 
@@ -371,6 +366,7 @@ void Sistema::novoServidor(vector<string> _comandos){
     
     if (this->buscarNomeServidor(nome) == false){ //Não existe servidor com esse nome cadastrado
         Servidor newServidor(usuarioDonoId, nome, descricao, codigoConvite, canais, participantesID);
+        newServidor.addParticipante(this->usuarioLogado.getId());
         servidores.push_back(newServidor);
         cout << "Servidor criado" << endl;
     } else {cout << "Servidor com esse nome já existe" << endl;}  
@@ -387,9 +383,11 @@ void Sistema::mudarDescricao(vector<string> _comandos){
     for(int i = 2; i < _comandos.size(); i++){newDescricao += _comandos[i] + " ";}
     if (this->buscarNomeServidor(_comandos[1]) == true){
         for(int i = 0; i < servidores.size(); i++){ 
-            if(servidores[i].getNome() == _comandos[1] && this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ 
+            if(servidores[i].getNome() == _comandos[1]){
+            if(this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ 
                 this->getServidorAtivo().mudarDescricao(&servidores[i], newDescricao);
-            } else {cout << "Você não pode alterar a descrição de um servidor que não foi criado por você" << endl;}
+                } else {cout << "Você não pode alterar a descrição de um servidor que não foi criado por você" << endl;}
+            }
         }
     } else {cout << "Servidor '" << _comandos[1] << "' não existe" << endl;}
     salvar();
@@ -405,9 +403,11 @@ void Sistema::mudarCodigoConvite(vector<string> _comandos){
     if(_comandos.size() == 3) {newCodigo = _comandos[2];}
     if (this->buscarNomeServidor(_comandos[1]) == true){
         for(int i = 0; i < servidores.size(); i++){ 
-            if(servidores[i].getNome() == _comandos[1] && this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ 
-                this->getServidorAtivo().mudarCodigoConvite(&servidores[i], newCodigo);
-            } else {cout << "Você não pode alterar o código de um servidor que não foi criado por você" << endl;}
+            if(servidores[i].getNome() == _comandos[1]){
+                if(this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ 
+                    this->getServidorAtivo().mudarCodigoConvite(&servidores[i], newCodigo);
+                }else {cout << "Você não pode alterar o código de um servidor que não foi criado por você" << endl;}
+            }            
         }
     } else {cout << "Servidor '" << _comandos[1] << "' não existe" << endl;}
     salvar();
@@ -464,8 +464,8 @@ void Sistema::joinServidor(vector<string> _comandos){
             } else if(servidores[i].getCodigoConvite() == codigo || this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ //verifica se o código informado está correto ou se o usuário logado é o dono                
                 this->setServidorAtivo(servidores[i]);
                 servidorAtivo.addParticipante(this->usuarioLogado.getId());
-                
                 cout << "Entrou no servidor com sucesso" << endl;
+                break;
             } else {cout << "Servidor requer código de convite" << endl;}
         } else {cout << "Servidor '" << nome << "' não existe" << endl;}
     }     
@@ -529,8 +529,8 @@ void Sistema::criarCanal(vector<string> _comandos){
         if(buscarCanal(_comandos[1]) == false){
             newCanal = new CanalTexto(nome);
             servidor->addCanal(newCanal);
-            cout << "Canal de voz '"<< _comandos[1] <<"' criado" << endl;
-        } else {cout << "Canal de voz '"<< _comandos[1] <<"' já existe!" << endl;}
+            cout << "Canal de texto '"<< _comandos[1] <<"' criado" << endl;
+        } else {cout << "Canal de texto '"<< _comandos[1] <<"' já existe!" << endl;}
     }
     if(_comandos[2] == "voz"){
         if(buscarCanal(_comandos[1]) == false){
@@ -548,7 +548,7 @@ void Sistema::entrarCanal(vector<string> _comandos){
     carregar();
     string nome = _comandos[1];
     vector<Canal*> canais = this->servidorAtivo.getCanais();
-    if(this->buscarCanal(nome) == true && this->getNomeCanalAtivo() != " "){ //se existe canal com esse nome
+    if(this->buscarCanal(nome) == true){ //se existe canal com esse nome
         for(const auto& canal : canais){
             if(canal->getNome() == nome){
                 this->setNomeCanalAtivo(canal->getNome());
