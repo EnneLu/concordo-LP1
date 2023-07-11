@@ -58,5 +58,5 @@ void Servidor::addParticipante(int _id){
 }
 
 void Servidor::addCanal(Canal *_newCanal){
-    this->canais.push_back(_newCanal);
+   this->canais.push_back(_newCanal);
 }

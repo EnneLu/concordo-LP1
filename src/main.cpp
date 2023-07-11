@@ -58,7 +58,7 @@ int main(){
                                     sistema.criarCanal(comandos);   
                                 }
                                 if (comandos[0] == "list-channels"){
-                                    cout << sistema.listCanais() << endl;;   
+                                    cout << sistema.listCanais() << endl;   
                                 }
                                 if (comandos[0] == "enter-channel"){
                                     sistema.entrarCanal(comandos); 
@@ -71,7 +71,7 @@ int main(){
                                                 sistema.enviarMensagem(comandos);   
                                             }
                                             if (comandos[0] == "list-messages"){
-                                                sistema.listMensagens();   
+                                                cout << sistema.listMensagens();   
                                             }
                                         }
                                         sistema.sairCanal(comandos);

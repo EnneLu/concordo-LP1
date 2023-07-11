@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+#include "mensagem.hpp"
+#include "usuario.hpp"
 
 using namespace std;
 
@@ -18,8 +21,9 @@ class Canal{
 
         string getNome(); /**< Método get para acessar nome do canal*/
 
-        virtual void enviarMensagem(string _mensagem) = 0;
-        virtual string imprimirMensagem() = 0;
+        virtual void enviarMensagem(Mensagem _mensagem) = 0;
+        virtual string buscarUsuarioId(vector<Usuario> _usuarios, int _id) = 0;
+        virtual string imprimirMensagem(vector<Usuario> _usuarios) = 0;
 
     protected:
         void setNome (string _nome); /**< Método set para alterar valor da variável nome*/

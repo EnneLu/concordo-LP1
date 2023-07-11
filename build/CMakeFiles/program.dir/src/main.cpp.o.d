@@ -156,6 +156,6 @@ CMakeFiles/program.dir/src/main.cpp.o: \
  /home/luenne/concordo-LP1/include/usuario.hpp \
  /home/luenne/concordo-LP1/include/servidor.hpp \
  /home/luenne/concordo-LP1/include/canal.hpp \
- /home/luenne/concordo-LP1/include/canalTexto.hpp \
  /home/luenne/concordo-LP1/include/mensagem.hpp \
+ /home/luenne/concordo-LP1/include/canalTexto.hpp \
  /home/luenne/concordo-LP1/include/canalVoz.hpp

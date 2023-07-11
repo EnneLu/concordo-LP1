@@ -19,8 +19,9 @@ class CanalVoz : public Canal{
                 ~CanalVoz(); /**< Destrutor*/
         
         Mensagem getUltimaMensagem(); /**< Método get para acessar a última mensagem*/
-        void enviarMensagem(string _mensagem);
-        string imprimirMensagem();
+        void enviarMensagem(Mensagem _mensagem);
+        string buscarUsuarioId(vector<Usuario> _usuarios, int _id);
+        string imprimirMensagem(vector<Usuario> _usuarios);
 
         protected:
                 void setUltimaMensagem(Mensagem _ultimaMensagem); /**< Método set para alterar valor da var última mensagem*/

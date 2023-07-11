@@ -12,6 +12,13 @@ create-channel duvidas texto
 create-channel atendimento voz
 list-channels
 enter-channel duvidas
+send-message Oi pessoal alguém pode me ajudar?
+send-message Por favor?
+list-messages
+leave-channel
+enter-channel atendimento
+send-message Como funciona esta biblioteca?
+list-messages
 leave-channel
 leave-server
 disconnect

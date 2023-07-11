@@ -181,7 +181,14 @@ CMakeFiles/program.dir/src/canal.cpp.o: ../src/canal.cpp \
   /usr/include/c++/11/bits/basic_ios.tcc \
   /usr/include/c++/11/bits/ostream.tcc \
   /usr/include/c++/11/istream \
-  /usr/include/c++/11/bits/istream.tcc
+  /usr/include/c++/11/bits/istream.tcc \
+  /usr/include/c++/11/vector \
+  /usr/include/c++/11/bits/stl_uninitialized.h \
+  /usr/include/c++/11/bits/stl_vector.h \
+  /usr/include/c++/11/bits/stl_bvector.h \
+  /usr/include/c++/11/bits/vector.tcc \
+  ../include/mensagem.hpp \
+  ../include/usuario.hpp
 
 CMakeFiles/program.dir/src/canalTexto.cpp.o: ../src/canalTexto.cpp \
   /usr/include/stdc-predef.h \
@@ -370,7 +377,15 @@ CMakeFiles/program.dir/src/canalTexto.cpp.o: ../src/canalTexto.cpp \
   /usr/include/c++/11/bits/stl_bvector.h \
   /usr/include/c++/11/bits/vector.tcc \
   ../include/canal.hpp \
-  ../include/mensagem.hpp
+  ../include/mensagem.hpp \
+  ../include/usuario.hpp \
+  /usr/include/c++/11/sstream \
+  /usr/include/c++/11/bits/sstream.tcc \
+  /usr/include/c++/11/fstream \
+  /usr/include/c++/11/bits/codecvt.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
+  /usr/include/c++/11/bits/fstream.tcc
 
 CMakeFiles/program.dir/src/canalVoz.cpp.o: ../src/canalVoz.cpp \
   /usr/include/stdc-predef.h \
@@ -559,7 +574,15 @@ CMakeFiles/program.dir/src/canalVoz.cpp.o: ../src/canalVoz.cpp \
   /usr/include/c++/11/bits/stl_bvector.h \
   /usr/include/c++/11/bits/vector.tcc \
   ../include/canal.hpp \
-  ../include/mensagem.hpp
+  ../include/mensagem.hpp \
+  ../include/usuario.hpp \
+  /usr/include/c++/11/sstream \
+  /usr/include/c++/11/bits/sstream.tcc \
+  /usr/include/c++/11/fstream \
+  /usr/include/c++/11/bits/codecvt.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
+  /usr/include/c++/11/bits/fstream.tcc
 
 CMakeFiles/program.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/stdc-predef.h \
@@ -754,8 +777,8 @@ CMakeFiles/program.dir/src/main.cpp.o: ../src/main.cpp \
   ../include/usuario.hpp \
   ../include/servidor.hpp \
   ../include/canal.hpp \
-  ../include/canalTexto.hpp \
   ../include/mensagem.hpp \
+  ../include/canalTexto.hpp \
   ../include/canalVoz.hpp
 
 CMakeFiles/program.dir/src/mensagem.cpp.o: ../src/mensagem.cpp \
@@ -1127,6 +1150,7 @@ CMakeFiles/program.dir/src/servidor.cpp.o: ../src/servidor.cpp \
   /usr/include/c++/11/bits/stl_bvector.h \
   /usr/include/c++/11/bits/vector.tcc \
   ../include/canal.hpp \
+  ../include/mensagem.hpp \
   ../include/usuario.hpp
 
 CMakeFiles/program.dir/src/sistema.cpp.o: ../src/sistema.cpp \
@@ -1318,11 +1342,16 @@ CMakeFiles/program.dir/src/sistema.cpp.o: ../src/sistema.cpp \
   ../include/usuario.hpp \
   ../include/servidor.hpp \
   ../include/canal.hpp \
-  ../include/canalTexto.hpp \
   ../include/mensagem.hpp \
+  ../include/canalTexto.hpp \
   ../include/canalVoz.hpp \
   /usr/include/c++/11/sstream \
-  /usr/include/c++/11/bits/sstream.tcc
+  /usr/include/c++/11/bits/sstream.tcc \
+  /usr/include/c++/11/fstream \
+  /usr/include/c++/11/bits/codecvt.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
+  /usr/include/c++/11/bits/fstream.tcc
 
 CMakeFiles/program.dir/src/usuario.cpp.o: ../src/usuario.cpp \
   /usr/include/stdc-predef.h \
@@ -1515,11 +1544,17 @@ CMakeFiles/program.dir/src/usuario.cpp.o: ../src/usuario.cpp \
 
 ../include/sistema.hpp:
 
-/usr/include/c++/11/sstream:
-
 ../src/main.cpp:
 
 ../include/canalVoz.hpp:
+
+/usr/include/c++/11/bits/fstream.tcc:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h:
+
+/usr/include/c++/11/sstream:
 
 ../include/mensagem.hpp:
 
@@ -1712,6 +1747,8 @@ CMakeFiles/program.dir/src/usuario.cpp.o: ../src/usuario.cpp \
 /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h:
 
 /usr/include/c++/11/iosfwd:
+
+/usr/include/c++/11/bits/codecvt.h:
 
 ../include/usuario.hpp:
 
@@ -1906,6 +1943,8 @@ CMakeFiles/program.dir/src/usuario.cpp.o: ../src/usuario.cpp \
 /usr/include/x86_64-linux-gnu/bits/endian.h:
 
 /usr/include/c++/11/bits/basic_string.h:
+
+/usr/include/c++/11/fstream:
 
 /usr/include/c++/11/bits/cxxabi_forced.h:
 

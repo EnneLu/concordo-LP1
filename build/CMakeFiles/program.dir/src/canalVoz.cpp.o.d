@@ -152,4 +152,10 @@ CMakeFiles/program.dir/src/canalVoz.cpp.o: \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc \
  /home/luenne/concordo-LP1/include/canal.hpp \
- /home/luenne/concordo-LP1/include/mensagem.hpp
+ /home/luenne/concordo-LP1/include/mensagem.hpp \
+ /home/luenne/concordo-LP1/include/usuario.hpp \
+ /usr/include/c++/11/sstream /usr/include/c++/11/bits/sstream.tcc \
+ /usr/include/c++/11/fstream /usr/include/c++/11/bits/codecvt.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
+ /usr/include/c++/11/bits/fstream.tcc

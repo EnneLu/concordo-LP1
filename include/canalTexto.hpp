@@ -19,8 +19,9 @@ class CanalTexto : public Canal{
                 ~CanalTexto(); /**< Destrutor*/
 
         vector<Mensagem> getMensagens(); /**< Método get para acessar mensagens*/
-        void enviarMensagem(string _mensagem);
-        string imprimirMensagem();
+        void enviarMensagem(Mensagem _mensagem);
+        string buscarUsuarioId(vector<Usuario> _usuarios, int _id);
+        string imprimirMensagem(vector<Usuario> _usuarios);
 
         protected:
                 void setMensagens (vector<Mensagem> _mensagens); /**< Método set para alterar valor das mensagens*/
