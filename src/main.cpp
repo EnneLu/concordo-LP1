@@ -52,10 +52,13 @@ int main(){
                                 getline(cin, texto);
                                 comandos = sistema.leitor(texto);
                                 if (comandos[0] == "list-participants"){
-                                    sistema.listParticipantes();   
+                                    sistema.listParticipantes();  
+                                }
+                                if (comandos[0] == "create-channel"){
+                                    sistema.criarCanal(comandos);   
                                 }
                                 if (comandos[0] == "list-channels"){
-                                    sistema.listCanais();   
+                                    cout << sistema.listCanais() << endl;;   
                                 }
                                 if (comandos[0] == "enter-channel"){
                                     sistema.entrarCanal(comandos); 

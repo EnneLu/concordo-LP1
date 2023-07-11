@@ -11,7 +11,7 @@ Problemas parte 1 que foram tratados:
 - Inconsistência das funções
 - Vazamento de dado
 
-- Sistema apresenta inconsistência ao informar o código do servidor como vazio, é possível alterar o valor entretando em alguns casos occore segmentation fault
-- Inconsistência na função leave-server
+Parte 2:
+- A parte 2 não foi enviada via SIGAA, mas está implementada nesta versão
 
-Problmas parte 2:
+Parte 3:

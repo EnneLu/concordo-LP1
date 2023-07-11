@@ -5,6 +5,7 @@ login luennemafra15@gmail.com luenne123
 create-server bti2021
 set-server-desc minha-casa “servidor alunos ingressantes em 2021”
 set-server-desc bti2021 “servidor alunos ingressantes em 2021”
+set-server-invite-code bti2021 
 set-server-invite-code bti2021 4567
 create-server bti2021-girls
 list-servers

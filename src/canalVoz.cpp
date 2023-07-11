@@ -4,7 +4,6 @@ CanalVoz::CanalVoz(string _nome) : Canal(_nome){
     
 }
 CanalVoz::~CanalVoz(){
-    //delete &ultimaMensagem;
 }
 
 Mensagem CanalVoz::getUltimaMensagem(){return this->ultimaMensagem;}

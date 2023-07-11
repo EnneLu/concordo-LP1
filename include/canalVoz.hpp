@@ -17,7 +17,7 @@ class CanalVoz : public Canal{
 	public:
                 CanalVoz(string _nome); /**< Construtor*/
                 ~CanalVoz(); /**< Destrutor*/
-
+        
         Mensagem getUltimaMensagem(); /**< Método get para acessar a última mensagem*/
         void enviarMensagem(string _mensagem);
         string imprimirMensagem();

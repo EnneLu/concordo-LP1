@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "canal.hpp"
+#include "usuario.hpp"
 
 using namespace std;
 
@@ -22,7 +23,7 @@ class Servidor{
 	public:
         Servidor(); /**< Construtor zerar valores*/
         Servidor(int _usuarioDonoId, string _nome, string _descricao, string _codigoConvite, vector<Canal *> _canais, vector<int> _participantesIDs); /**< Construtor*/
-        //~Servidor(); /**< Destrutor*/
+        ~Servidor(); /**< Destrutor*/
 
         int getUsuarioDonoId(); /**< Método get para acessar var usuarioDonoId*/
         string getNome(); /**< Método get para acessar var nome*/
@@ -31,10 +32,10 @@ class Servidor{
         vector<Canal *> getCanais(); /**< Método get para acessar var canais*/
         vector<int> getParticipantesIDs(); /**< Método get para acessar var participantesIDs*/
 
-        void mudarDescricao(string _newDescricao); /**< Função responsável por mudar a descrição do servidor*/
-        void mudarCodigoConvite(string _newCodigo); /**< Função responsável por mudar o código de convite do servidor*/
-        string buscarUsuarioId(int _id); /**< Buscar nome do usuário utilizando id*/
-        void listParticipantes(); /**< Busca o nome do usuário de acordo com o id presente na var IdParticipantes da classe Servidor e realiza a listagem*/
+        void mudarDescricao(Servidor *_servidor, string _newDescricao); /**< Função responsável por mudar a descrição do servidor*/
+        void mudarCodigoConvite(Servidor *_servidor, string _newCodigo); /**< Função responsável por mudar o código de convite do servidor*/
+        void addParticipante(int _id);
+        void addCanal(Canal *_newCanal);
 
     protected:
         void setUsuarioDonoId(int _usuarioDonoId); /**< Método set para alterar valor da var usuarioDonoId*/

@@ -1,5 +1,12 @@
 #include "sistema.hpp"
+#include <iostream>
 #include <sstream>
+#include <fstream>
+#include <algorithm>
+#include <iomanip>      // std::put_time
+#include <ctime>        // std::time_t, struct std::tm, std::localtime
+#include <chrono>       // std::chrono::system_clock
+#include <typeinfo>
 
 Sistema::Sistema(){
 
@@ -10,6 +17,10 @@ Sistema::Sistema(vector<Usuario> _usuarios, vector<Servidor> _servidores, Usuari
     this->usuarioLogado = _usuarioLogado;
     this->servidorAtivo = _servidorAtivo;
     this->nomeCanalAtivo = _nomeCanalAtivo;
+}
+
+Sistema::~Sistema(){
+
 }
 
 vector<Usuario> Sistema::getUsuarios(){return this->usuarios;}
@@ -57,7 +68,8 @@ void Sistema::novoUsuario(vector<string> _comandos){
     int id = usuarios.size()+1, i = 0;
     string email = _comandos[1];
     string senha = _comandos[2];
-    string nome = _comandos[3];
+    string nome;
+    for(int i = 3; i < _comandos.size(); i++){nome += _comandos[i] + " ";}
     if (this->buscarEmail(email) == false){ //Não existe email cadastrado
         Usuario newUsuario(id, email, senha, nome);
         usuarios.push_back(newUsuario);
@@ -141,11 +153,12 @@ void Sistema::novoServidor(vector<string> _comandos){
  e atualiza sua descrição chamando a função mudarDescricao presente na classe servidor 
  verificando também se a var usuarioLogado é o dono do servidor*/
 void Sistema::mudarDescricao(vector<string> _comandos){
-    string newDescricao = _comandos[2];
+    string newDescricao;
+    for(int i = 2; i < _comandos.size(); i++){newDescricao += _comandos[i] + " ";}
     if (this->buscarNomeServidor(_comandos[1]) == true){
         for(int i = 0; i < servidores.size(); i++){ 
             if(servidores[i].getNome() == _comandos[1] && this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ 
-                this->getServidorAtivo().mudarDescricao(newDescricao);
+                this->getServidorAtivo().mudarDescricao(&servidores[i], newDescricao);
             } else {cout << "Você não pode alterar a descrição de um servidor que não foi criado por você" << endl;}
         }
     } else {cout << "Servidor '" << _comandos[1] << "' não existe" << endl;}
@@ -156,11 +169,12 @@ void Sistema::mudarDescricao(vector<string> _comandos){
  e atualiza sua descrição chamando a função mudarCodigoConvite presente na classe servidor 
  verificando também se a var usuarioLogado é o dono do servidor*/
 void Sistema::mudarCodigoConvite(vector<string> _comandos){
-    string newCodigo = _comandos[2];
+    string newCodigo = " ";
+    if(_comandos.size() == 3) {newCodigo = _comandos[2];}
     if (this->buscarNomeServidor(_comandos[1]) == true){
         for(int i = 0; i < servidores.size(); i++){ 
             if(servidores[i].getNome() == _comandos[1] && this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ 
-                this->getServidorAtivo().mudarCodigoConvite(newCodigo);
+                this->getServidorAtivo().mudarCodigoConvite(&servidores[i], newCodigo);
             } else {cout << "Você não pode alterar o código de um servidor que não foi criado por você" << endl;}
         }
     } else {cout << "Servidor '" << _comandos[1] << "' não existe" << endl;}
@@ -205,14 +219,15 @@ void Sistema::joinServidor(vector<string> _comandos){
     string codigo = _comandos[2];
     for(int i = 0; i < servidores.size(); i++){
         if(servidores[i].getNome() == nome){ //se o nome informado é o nome na posição atual do vector
-            if(servidores[i].getCodigoConvite() ==  " "){ //se o servidor for aberto qualquer usuário entra              
-                servidores[i].getParticipantesIDs().push_back(this->usuarioLogado.getId());
-                this->getServidorAtivo() = servidores[i];
+            if(servidores[i].getCodigoConvite() ==  " "){ //se o servidor for aberto qualquer usuário entra  
+                this->setServidorAtivo(servidores[i]);
+                servidorAtivo.addParticipante(this->usuarioLogado.getId());
                 cout << "Entrou no servidor com sucesso" << endl;
                 break;
             } else if(servidores[i].getCodigoConvite() == codigo || this->usuarioLogado.getId() == servidores[i].getUsuarioDonoId()){ //verifica se o código informado está correto ou se o usuário logado é o dono                
-                servidores[i].getParticipantesIDs().push_back(this->usuarioLogado.getId());
-                this->getServidorAtivo() = servidores[i];
+                this->setServidorAtivo(servidores[i]);
+                servidorAtivo.addParticipante(this->usuarioLogado.getId());
+                
                 cout << "Entrou no servidor com sucesso" << endl;
             } else {cout << "Servidor requer código de convite" << endl;}
         } else {cout << "Servidor '" << nome << "' não existe" << endl;}
@@ -223,21 +238,29 @@ void Sistema::joinServidor(vector<string> _comandos){
 void Sistema::leaveServidor(){
     if(servidorAtivo.getUsuarioDonoId() != 0){
         Servidor servidorVazio(0, " ", " ", " ", { }, { });
-        this->servidorAtivo = servidorVazio;
         cout << "Saindo do servidor '" << servidorAtivo.getNome() << "'" << endl;
+        this->servidorAtivo = servidorVazio;
     } else {cout << "Você não está visualizando nenhum servidor" << endl;} 
 }
 
-/*Esta função chama a função listParticipantes presente na classe Servidor*/
-void Sistema::listParticipantes(){
-    /*string nome;
-    for(int i = 0; i < getParticipantesIDs().size(); i++){
-       if(getParticipantesIDs() == _id)
+/*Esta função busca o nome do usuário de acordo com seu id e retorna o nome*/
+string Sistema::buscarUsuarioId(int _id){
+    string nome;
+    for(int i = 0; i < usuarios.size(); i++){
+       if(usuarios[i].getId() == _id)
         nome = usuarios[i].getNome();
     }
     return nome;
-    
-    this->getServidorAtivo().listParticipantes();*/
+}
+
+/*Esta função chama a função buscarUsuarioId para cada id presente no vector participantes Id
+em seguida informa o nome*/
+void Sistema::listParticipantes(){
+    string nome = "vazio";
+    for(int i = 0; i < servidorAtivo.getParticipantesIDs().size(); i++){
+        nome = buscarUsuarioId(servidorAtivo.getParticipantesIDs()[i]);
+        cout << nome << endl;
+    }
 }
 
 //**FUNÇÕES CANAIS**//
@@ -246,30 +269,35 @@ bool Sistema::buscarCanal(string _nome){
     vector<Canal*> canais = this->servidorAtivo.getCanais();
     for(const auto& canal : canais){
         if(canal->getNome() == _nome){
-            return true; 
-        }        
-    }return false;       
+            return true; //1
+        }   
+    }return false; //0
 }
 
 /*Função que cria novo canal e insere no vector de canais do servidor ativo
 antes da inserção realiza a busca se já existe canal com o nome informado*/
 void Sistema::criarCanal(vector<string> _comandos){
+    Canal* newCanal;
+    Servidor newservidor;
+
+    for(int i = 0; i < servidores.size(); i++){if(servidores[i].getNome() == getNomeCanalAtivo()){newservidor = servidores[i];}}
     if(_comandos[2] == "texto"){
+        bool status = buscarCanal(_comandos[1]);
+        cout << status << endl;
         if(buscarCanal(_comandos[1]) == false){
             string nome = _comandos[1];
-            CanalTexto newCanal(nome);
-            this->servidorAtivo.getCanais().push_back(&newCanal);
+            newCanal = new CanalTexto(nome);
             cout << "Canal de voz '"<< _comandos[1] <<"' criado" << endl;
         } else {cout << "Canal de voz '"<< _comandos[1] <<"' já existe!" << endl;}
     }
     if(_comandos[2] == "voz"){
         if(buscarCanal(_comandos[1]) == false){
             string nome = _comandos[1];
-            CanalVoz newCanal(nome);
-            this->servidorAtivo.getCanais().push_back(&newCanal);
+            newCanal = new CanalVoz(nome);
             cout << "Canal de voz '"<< _comandos[1] <<"' criado" << endl;
         } else {cout << "Canal de voz '"<< _comandos[1] <<"' já existe!" << endl;}
     }
+    newservidor.addCanal(newCanal);
 }
 
 void Sistema::entrarCanal(vector<string> _comandos){
@@ -278,7 +306,7 @@ void Sistema::entrarCanal(vector<string> _comandos){
     if(this->buscarCanal(nome) == true && this->getNomeCanalAtivo() != " "){ //se existe canal com esse nome
         for(const auto& canal : canais){
             if(canal->getNome() == nome){
-                //this->getCanalAtivo() = /*recerber a posição no vector*/;
+                this->setNomeCanalAtivo(canal->getNome());
                 cout << "Entrou no canal '" << nome << "'" << endl;
                 break;
             }        
@@ -287,24 +315,40 @@ void Sistema::entrarCanal(vector<string> _comandos){
 }
 
 void Sistema::sairCanal(vector<string> _comandos){
-    /*Canal canalVazio(" ");
-    this->getCanalAtivo() = canalVazio;       */
+    string vazio = " ";
+    this->setNomeCanalAtivo(vazio);
 }
 
 string Sistema::listCanais(){
-    string nome;
+    string nome = "vazio";
+    Servidor servidorAtivo;
+    vector<Canal*> listCanal;
+    ostringstream outputT;
+    ostringstream outputV;
 
+    for(int i = 0; i < servidores.size(); i++){if(servidores[i].getNome() == getNomeCanalAtivo()){servidorAtivo = servidores[i];}}
+    listCanal = servidorAtivo.getCanais();
 
-    return nome;    
+    outputT << "#canais de texto";
+    outputV << "#canais de voz";
+    auto it = listCanal.begin();
+    while (it != listCanal.end()) {
+        if (typeid(*it) == typeid(CanalTexto)) {
+        outputT << endl << (*it)->getNome();
+        } else {
+        outputV << endl << (*it)->getNome();
+        }
+        ++it;
+    }
+
+    outputT << endl << outputV.str();
+    return outputT.str();   
 }
 
 /*Percorre verifica a var canalAtivo e chama a função enviarMensagem
 presente na classe Canal e implementada nas classes CanalTexto e CanalVoz*/
 void Sistema::enviarMensagem(vector<string> _comandos){
-    if(this->getNomeCanalAtivo() != " "){
-        string mensagem = _comandos[2];
-        //this->getCanalAtivo().enviarMensagem(mensagem);
-    }
+
 }
 
 /*Percorre o vector de mensagem, em cada posição realiza a chamada 
@@ -315,3 +359,78 @@ string Sistema::listMensagens(){
 
     return nome;    
 }
+
+/*string System::send_message(const string message) {
+  load(); 
+  // Verifica se existe usuario logado
+  if (loggedUserId == 0) {
+    return "Não está conectado";
+  }
+  // Verifica se está vendo algum servidor
+  if (connectedServerName.length() == 0) {
+    return "Você não está visualizando nenhum servidor";
+  }
+  // Verifica se está vendo algum canal
+  if (connectedChannelName.length() == 0) {
+    return "Você não está visualizando nenhum canal";
+  }
+
+  // Caso tudo ok, cria uma nova mensagem com os atributos
+  ostringstream dateTime; 
+  dateTime << put_time(currentTime(), "%H:%M - %d/%m/%Y");
+  Message newMessage(dateTime.str(), loggedUserId, message);
+
+  // Obtém o servidor na lista pelo nome
+  string serverName = connectedServerName;
+  auto server = find_if(servers.begin(), servers.end(), [serverName](Server server) {
+    return serverName == server.getName();
+  });
+
+  // Obtém a lista de canais do servidor
+  vector<Channel*> channels = server->getChannels();
+
+  // Obtém o primeiro canal de mesmo nome na lista
+  string channelName = connectedChannelName;
+  auto channel = find_if(channels.begin(), channels.end(), [channelName](Channel* channel) {
+    return channelName == channel->getName();
+  });
+
+  // Adiciona a nova mensagem ao canal
+  (*channel)->addMessage(newMessage);
+  save();
+  return "Mensagem enviada";
+}
+
+string System::list_messages() {
+  load(); 
+  // Verifica se existe usuario logado
+  if (loggedUserId == 0) {
+    return "Não está conectado";
+  }
+  // Verifica se está vendo algum servidor
+  if (connectedServerName.length() == 0) {
+    return "Você não está visualizando nenhum servidor";
+  }
+  // Verifica se está vendo algum canal
+  if (connectedChannelName.length() == 0) {
+    return "Você não está visualizando nenhum canal";
+  }
+
+  // Caso tudo ok, obtém o servidor na lista pelo nome
+  string serverName = connectedServerName;
+  auto server = find_if(servers.begin(), servers.end(), [serverName](Server server) {
+    return serverName == server.getName();
+  });
+
+  // Obtém a lista de canais do servidor
+  vector<Channel*> channels = server->getChannels();
+
+  // Obtém o primeiro canal de mesmo nome na lista
+  string channelName = connectedChannelName;
+  auto channel = find_if(channels.begin(), channels.end(), [channelName](Channel* channel) {
+    return channelName == channel->getName();
+  });
+
+  // Retorna a lista de mensagens do canal
+  return (*channel)->printMessages(users);
+}*/

@@ -5,7 +5,6 @@ Canal::Canal(string _nome){
 }
 
 Canal::~Canal(){
-    //delete &nome;
 }
 
 string Canal::getNome(){return this->nome;}

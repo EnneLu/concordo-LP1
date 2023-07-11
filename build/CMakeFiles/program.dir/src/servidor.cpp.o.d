@@ -151,4 +151,5 @@ CMakeFiles/program.dir/src/servidor.cpp.o: \
  /usr/include/c++/11/bits/stl_vector.h \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc \
- /home/luenne/concordo-LP1/include/canal.hpp
+ /home/luenne/concordo-LP1/include/canal.hpp \
+ /home/luenne/concordo-LP1/include/usuario.hpp

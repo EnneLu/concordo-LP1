@@ -24,7 +24,7 @@ class Sistema{
 	public:
         Sistema(); /**< Construtor zerar valores*/
         Sistema(vector<Usuario> _usuarios, vector<Servidor> _servidores, Usuario _usuarioLogado, Servidor _servidorAtivo, string _nomeCanalAtivo); /**< Construtor*/
-        //~Sistema(); /**< Destrutor*/
+        ~Sistema(); /**< Destrutor*/
 
 		vector<Usuario> getUsuarios(); /**< Método get para acessar var usuarios*/
         vector<Servidor> getServidores(); /**< Método get para acessar var servidores*/
@@ -56,6 +56,7 @@ class Sistema{
         //**FUNÇÕES DENTRO DO SERVIDOR**//
         void joinServidor(vector<string> _comandos); /**< Entrar no servidor, verifica se existe servidor com o nome informado e verifica o código do servidor */
         void leaveServidor(); /**< Desconecta do servidor e muda a variável servidorAtivo para um objeto vazio*/
+        string buscarUsuarioId(int _id);
         void listParticipantes(); /**< Busca o nome do usuário de acordo com o id presente na var IdParticipantes da classe Servidor e realiza a listagem*/
 
         //**FUNÇÕES CANAIS**//

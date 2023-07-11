@@ -11,11 +11,7 @@ Mensagem::Mensagem(string _dataHora, int _enviadaPor, string _conteudo){
     this->conteudo = _conteudo;
 }
 Mensagem::~Mensagem(){
-   /* if (dataHora != " " && enviadaPor !=  0 && conteudo !=  " "){
-        delete &dataHora;
-        delete &enviadaPor;
-        delete &conteudo;
-    }   */
+
 }
 
 string Mensagem::getDataHora(){return this->dataHora;}

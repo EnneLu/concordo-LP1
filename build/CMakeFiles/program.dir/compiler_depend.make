@@ -1126,7 +1126,8 @@ CMakeFiles/program.dir/src/servidor.cpp.o: ../src/servidor.cpp \
   /usr/include/c++/11/bits/stl_vector.h \
   /usr/include/c++/11/bits/stl_bvector.h \
   /usr/include/c++/11/bits/vector.tcc \
-  ../include/canal.hpp
+  ../include/canal.hpp \
+  ../include/usuario.hpp
 
 CMakeFiles/program.dir/src/sistema.cpp.o: ../src/sistema.cpp \
   /usr/include/stdc-predef.h \

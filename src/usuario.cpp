@@ -13,12 +13,7 @@ Usuario::Usuario(int _id, string _email, string _senha, string _nome){
     this->nome = _nome;
 }
 Usuario::~Usuario(){
-	/*if(id != 0 && nome != " " && email != " " && senha != " "){
-        delete &id;
-        delete &nome;
-        delete &email;
-        delete &senha;        
-    }*/
+
 }
 
 int Usuario::getId(){return this->id;}
