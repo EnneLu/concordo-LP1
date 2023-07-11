@@ -22,6 +22,8 @@ class CanalTexto : public Canal{
         void enviarMensagem(Mensagem _mensagem);
         string buscarUsuarioId(vector<Usuario> _usuarios, int _id);
         string imprimirMensagem(vector<Usuario> _usuarios);
+        vector<Mensagem> getMensagem();
+        string tipoClasse();
 
         protected:
                 void setMensagens (vector<Mensagem> _mensagens); /**< Método set para alterar valor das mensagens*/

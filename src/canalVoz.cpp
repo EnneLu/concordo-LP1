@@ -40,3 +40,11 @@ string CanalVoz::imprimirMensagem(vector<Usuario> _usuarios){
            
     return mensagem.str();
 }
+
+vector<Mensagem> CanalVoz::getMensagem(){
+    vector<Mensagem> mensagem;
+    mensagem.push_back(ultimaMensagem);
+    return mensagem;
+}
+
+string CanalVoz::tipoClasse(){return "voz";}

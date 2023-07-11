@@ -1,17 +1,21 @@
 # concordo-LP1
 Repositório do projeto concordo da disciplina LP1.
 
-Comandos:
-- Todos os comandos foram implementados
-
 Execução:
-- Existe um script modelo da parte 1 e 2 na pasta build
+- Existem modelos de script na pasta build
+- script1.txt -> parte1
+- script2.txt -> parte2
+- script2.txt, script3.txt -> parte3
 
-Problemas parte 1 que foram tratados:
-- Inconsistência das funções
-- Vazamento de dado
+Parte 1:
+- Todas as funções foram implementadas
 
 Parte 2:
-- A parte 2 não foi enviada via SIGAA, mas está implementada nesta versão
+- Todas as funções foram implementadas
 
 Parte 3:
+- Todas as funções foram implementadas
+- Existe 3 modelos de script com usuários e informações diferentes para testar funcionamento dos arquivos
+
+Dificuldades encontradas:
+- Solucionar vazamento de dados

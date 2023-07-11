@@ -1,0 +1,21 @@
+create-user sidemar.aluno@gmail.com sidemar123 Si Demar
+create-user sidemar.prof@gmail.com sidemar123 Sidemar Prof
+login sidemar.prof@gmail.com sidemar123
+create-server lp1-2022
+create-server lp1-2023
+disconnect
+login sidemar.aluno@gmail.com sidemar123
+enter-server lp1-2022
+create-channel atividade-casa texto
+enter-channel atividade-casa
+send-message Alguém tem o pdf da nova lista?
+leave-channel
+leave-server
+disconnect
+login sidemar.prof@gmail.com sidemar123
+enter-server lp1-2022
+send-message Olhe no sigaa
+leave-channel
+leave-server
+disconnect
+quit

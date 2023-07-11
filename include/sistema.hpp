@@ -21,6 +21,14 @@ class Sistema{
         Servidor servidorAtivo; /**< Var objeto que indica qual servidor está ativo*/
         string nomeCanalAtivo; /**< String nome que indica qual canal está ativo. Obs: Decidi mudar esta var pois dava erro ao utilizar a classe Canal como abstrata*/
 
+        //**PERSISTÊNCIA DOS DADOS - FUNÇÕES PRIVADAS**//
+        void salvarUsuarios();
+        void salvarServidores();
+
+        //**RESTAURAÇÃO DOS DADOS - FUNÇÕES PRIVADAS**//
+        void carregarUsuarios();
+        void carregarServidores();
+        
 	public:
         Sistema(); /**< Construtor zerar valores*/
         Sistema(vector<Usuario> _usuarios, vector<Servidor> _servidores, Usuario _usuarioLogado, Servidor _servidorAtivo, string _nomeCanalAtivo); /**< Construtor*/
@@ -32,7 +40,13 @@ class Sistema{
         Servidor getServidorAtivo(); /**< Método get para acessar var servidorAtivo*/
         string getNomeCanalAtivo(); /**< Método get para acessar var canalAtivo*/
 
-        ///**FUNÇÕES TRATAMENTO TEXTO**//
+        //**PERSISTÊNCIA DOS DADOS - FUNÇÕES PÚBLICAS**//
+        void salvar();
+
+        //**RESTAURAÇÃO DOS DADOS - FUNÇÕES PÚBLICAS**//
+        void carregar();
+
+        //**FUNÇÕES TRATAMENTO TEXTO**//
         vector<string> leitor(string &_texto); /**< Função responsável por separar string recebida no getline em um vector*/
 
         //**FUNÇÕES DE USUÁRIO**//

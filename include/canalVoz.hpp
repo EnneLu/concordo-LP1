@@ -22,6 +22,8 @@ class CanalVoz : public Canal{
         void enviarMensagem(Mensagem _mensagem);
         string buscarUsuarioId(vector<Usuario> _usuarios, int _id);
         string imprimirMensagem(vector<Usuario> _usuarios);
+        vector<Mensagem> getMensagem();
+        string tipoClasse();
 
         protected:
                 void setUltimaMensagem(Mensagem _ultimaMensagem); /**< Método set para alterar valor da var última mensagem*/

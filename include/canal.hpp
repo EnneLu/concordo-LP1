@@ -21,9 +21,11 @@ class Canal{
 
         string getNome(); /**< Método get para acessar nome do canal*/
 
+        virtual string tipoClasse() = 0;
         virtual void enviarMensagem(Mensagem _mensagem) = 0;
         virtual string buscarUsuarioId(vector<Usuario> _usuarios, int _id) = 0;
         virtual string imprimirMensagem(vector<Usuario> _usuarios) = 0;
+        virtual vector<Mensagem> getMensagem() = 0;
 
     protected:
         void setNome (string _nome); /**< Método set para alterar valor da variável nome*/

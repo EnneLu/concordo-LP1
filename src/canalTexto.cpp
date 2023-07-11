@@ -43,3 +43,7 @@ string CanalTexto::imprimirMensagem(vector<Usuario> _usuarios){
            
     return mensagem.str();
 }
+
+vector<Mensagem> CanalTexto::getMensagem(){return mensagens;}
+
+string CanalTexto::tipoClasse(){return "texto";}
