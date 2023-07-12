@@ -32,17 +32,13 @@ void Servidor::setCodigoConvite(string _codigoConvite){if(_codigoConvite != " ")
 void Servidor::setCanais(vector<Canal *> _canais){if(!canais.empty()) {this->canais = _canais;}}
 void Servidor::setParticipantesIDs(vector<int> _participantesIDs){if(!participantesIDs.empty()) {this->participantesIDs = _participantesIDs;}}
 
-/*Esta função chama a função buscarNomeServidor para verificar se existe um servidor
- com o nome informado no vector servidores, caso exista busca qual o servidor no vector de servidores
- e atualiza sua descrição verificando também se a var usuarioLogado é o dono do servidor*/
+/*Esta função muda a descrição do servidor informado como ponteiro*/
 void Servidor::mudarDescricao(Servidor *_servidor, string _newDescricao){
     _servidor->setDescricao(_newDescricao);
     cout << "Descrição do servidor '" << _servidor->getNome() << "' modificada!" << endl;
 }
 
-/*Esta função chama a função buscarNomeServidor para verificar se existe um servidor
- com o nome informado no vector servidores, caso exista busca qual o servidor no vector de servidores
- e atualiza seu código de convite verificando também se a var usuarioLogado é o dono do servidor*/
+/*Esta função muda o código do servidor informado como ponteiro*/
 void Servidor::mudarCodigoConvite(Servidor *_servidor, string _newCodigo){
     if (_newCodigo ==  " "){
         _servidor->setCodigoConvite(_newCodigo);
@@ -53,10 +49,12 @@ void Servidor::mudarCodigoConvite(Servidor *_servidor, string _newCodigo){
     }    
 }
 
+/*Adiciona id do novo participante no vector de participantes*/
 void Servidor::addParticipante(int _id){
     this->participantesIDs.push_back(_id);
 }
 
+/*Adiciona id do novo canal no vector de canais*/
 void Servidor::addCanal(Canal *_newCanal){
    this->canais.push_back(_newCanal);
 }

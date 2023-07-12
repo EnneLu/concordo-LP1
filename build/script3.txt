@@ -11,6 +11,8 @@ disconnect
 login sidemar.aluno@gmail.com sidemar123
 enter-server lp1-2022 7654
 create-channel atividade-casa texto
+create-channel atividade-casa texto
+create-channel resolver-atividades voz
 enter-channel atividade-casa
 send-message Alguém tem o pdf da nova lista?
 leave-channel

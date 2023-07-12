@@ -19,11 +19,11 @@ class CanalTexto : public Canal{
                 ~CanalTexto(); /**< Destrutor*/
 
         vector<Mensagem> getMensagens(); /**< Método get para acessar mensagens*/
-        void enviarMensagem(Mensagem _mensagem);
-        string buscarUsuarioId(vector<Usuario> _usuarios, int _id);
-        string imprimirMensagem(vector<Usuario> _usuarios);
-        vector<Mensagem> getMensagem();
-        string tipoClasse();
+        void enviarMensagem(Mensagem _mensagem); /**< Implementação da função virtual para enviar mensagem*/
+        string buscarUsuarioId(vector<Usuario> _usuarios, int _id); /**< Implementação da função virtual onde cada classe imprime mensagem*/
+        string imprimirMensagem(vector<Usuario> _usuarios); /**< Implementação da função virtual para imprimir mensagem*/
+        vector<Mensagem> getMensagem(); /**< Implementação da função virtual onde a classe retorna sua variável mensagem*/
+        string tipoClasse(); /**< Implementação da função virtual onde cada classe informa seu tipo da Classe*/
 
         protected:
                 void setMensagens (vector<Mensagem> _mensagens); /**< Método set para alterar valor das mensagens*/

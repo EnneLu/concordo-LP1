@@ -34,8 +34,8 @@ class Servidor{
 
         void mudarDescricao(Servidor *_servidor, string _newDescricao); /**< Função responsável por mudar a descrição do servidor*/
         void mudarCodigoConvite(Servidor *_servidor, string _newCodigo); /**< Função responsável por mudar o código de convite do servidor*/
-        void addParticipante(int _id);
-        void addCanal(Canal *_newCanal);
+        void addParticipante(int _id); /**< Função responsável por adicionar id dos participantes no vector de participantesIDs*/
+        void addCanal(Canal *_newCanal); /**< Função responsável por adicionar novo canal no vector de canais*/
 
     protected:
         void setUsuarioDonoId(int _usuarioDonoId); /**< Método set para alterar valor da var usuarioDonoId*/

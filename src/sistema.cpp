@@ -35,7 +35,8 @@ void Sistema::setNomeCanalAtivo(string _nomeCanalAtivo){this->nomeCanalAtivo = _
 
 //**FUNÇÕES TRATAMENTO TEXTO**//
 
-/*Esta função recebe uma variável string e retorna um vector da própria divido por espaço*/
+/*Esta função recebe uma variável string e retorna um vector da própria divido por espaço,
+este vector é utilizado em todas as funções para selecionar os valores em suas posições*/
 vector<string> Sistema::leitor(string &_texto){ 
     vector<string> result;
     istringstream iss(_texto);
@@ -52,57 +53,47 @@ vector<string> Sistema::leitor(string &_texto){
 void Sistema::salvarUsuarios(){
     ofstream usuArq("usuarios.txt");
 
-    // Quantidade de usuários
     int u = usuarios.size();
-    usuArq << u << endl;
-    // Imprime os dados do vector usuarios mprimindo seus dados
-    for (int i = 0; i < u; i++) {
+    usuArq << u << endl; //Informa quantidade de usuários cadastrados
+    for (int i = 0; i < u; i++) { //Informa as variáveis de todos os usuários do sistema
         usuArq << usuarios[i].getId() << endl;
         usuArq << usuarios[i].getNome() << endl;
         usuArq << usuarios[i].getEmail() << endl;
         usuArq << usuarios[i].getSenha() << endl;
     }
 
-    // Fecha o arquivo
     usuArq.close();
 }
 void Sistema::salvarServidores(){
-    
     ofstream serviArq("servidores.txt");
-    // Imprime a quantidade de servidores
-    int s = servidores.size();
-    serviArq << s << endl;
 
-    // Percorre o vetor de servidores
-    for (int i = 0; i < s; i++) {
+    int s = servidores.size(); //Informa quantidade de servidores cadastrados
+    serviArq << s << endl;
+    for (int i = 0; i < s; i++) { //Informa as variáveis de todos os servidores do sistema
         serviArq << servidores[i].getUsuarioDonoId() << endl;
         serviArq << servidores[i].getNome() << endl;
         serviArq << servidores[i].getDescricao() << endl;
         serviArq << servidores[i].getCodigoConvite() << endl;
 
-        vector<int> participantesIDs = servidores[i].getParticipantesIDs();
+        vector<int> participantesIDs = servidores[i].getParticipantesIDs(); //Informa quantidade de participantes do servidor
         serviArq << participantesIDs.size() << endl;
-        // Imprime os ids dos usuários participantes
-        for (int j = 0; j < participantesIDs.size(); j++) {serviArq << participantesIDs[j] << endl;}
+        for (int j = 0; j < participantesIDs.size(); j++) {serviArq << participantesIDs[j] << endl;} //Informa o id de cada participante
 
-        vector<Canal*> canais = servidores[i].getCanais();
+        vector<Canal*> canais = servidores[i].getCanais(); //Informa quantidade de canais do servidor
         serviArq << canais.size() << endl;
-        // Imprime os atributos dos canais
         string tipo;
-        for (int j = 0; j < canais.size(); j++) {
-            serviArq << canais[j]->getNome() << endl;
+        for (int j = 0; j < canais.size(); j++) { //Percorre todos os canais cadastrados
+            serviArq << canais[j]->getNome() << endl; //Informa o nome do canal na posição j
             if(canais[j]->tipoClasse() == "texto"){
                 tipo = "TEXTO";
             } else if(canais[j]->tipoClasse() == "voz"){
                 tipo = "VOZ";
             }
-            serviArq << tipo << endl;
+            serviArq << tipo << endl; //Informa o tipo do canal na posição j
 
-            // Imprime a quantidade de mensagens
-            vector<Mensagem> mensagem = canais[j]->getMensagem();
+            vector<Mensagem> mensagem = canais[j]->getMensagem(); //Informa quantidade de mensagem do canal na posição j
             serviArq << mensagem.size() << endl;
-            // Imprime os atributos de cada mensagem
-                for (int k = 0; k < mensagem.size(); k++) {
+                for (int k = 0; k < mensagem.size(); k++) { //Informa todas as variáveis da mensagem
                     serviArq << mensagem[k].getEnviadaPor() << endl;
                     serviArq << mensagem[k].getDataHora() << endl;
                     serviArq << mensagem[k].getConteudo() << endl;
@@ -110,9 +101,10 @@ void Sistema::salvarServidores(){
             }
         }
 
-    // Fecha o arquivo
     serviArq.close();
 }
+
+/*Chama as demais funções para salvar*/
 void Sistema::salvar(){
     salvarUsuarios();
     salvarServidores(); 
@@ -132,35 +124,27 @@ bool Sistema::buscarEmail(string _email){
 void Sistema::carregarUsuarios(){
     ifstream usuArq("usuarios.txt");
 
-    string size, id, nome, email, senha;
+    string size, id, nome, email, senha; //Variaveis que serão utilizadas ao cadastrar os dados
     size_t u;
-
-    // Reseta o vector de usuários
     usuarios.clear();
 
-    // Lê a quantidade de usuários e converte para size_t
-    usuArq >> size; 
+    usuArq >> size; //Verifica quantidade de usuários disponíveis no arquivo e atualiza a var u
     u = stoi(size);
-
     usuArq.ignore();
-    // Percorre o arquivo capturando os atributos dos usuários
-    for (int i = 0; i < u ; ++i) {
+
+    for (int i = 0; i < u ; ++i) { //Salva as variáveis de todos os usuários do arquivo
         getline(usuArq, id);
         getline(usuArq, nome);
         getline(usuArq, email);
         getline(usuArq, senha);
-
-        // Converter a string id para int
         int intId = stoi(id);
-        
-        // Verifica se o usuário já existe
-        if (this->buscarEmail(email) == false){ //Não existe email cadastrado
+  
+        if (this->buscarEmail(email) == false){ // Verifica se o usuário já existe
             Usuario newUsuario(intId, email, senha, nome);
             usuarios.push_back(newUsuario);
         }
     }
 
-    // Fecha o arquivo
     usuArq.close();
 }
 void Sistema::carregarServidores(){
@@ -169,107 +153,85 @@ void Sistema::carregarServidores(){
     string size, usuarioDonoId, nome, descricao, codigoConvite, idParticipante, nomeCanal, tipoCanal, idMensagem, dataHora, conteudo;
     size_t s, u, c, m;
     int intId;
+    servidores.clear(); 
 
-    // Reseta o vector de servers
-    servidores.clear();
-
-    // Lê a quantidade de servidores e converte para size_t
-    getline(serviArq, size);
+    getline(serviArq, size); //Verifica quantidade de servidores disponíveis no arquivo e atualiza a var s
     s = stoi(size);
     
-    // Percorre o arquivo capturando os atributos dos servidores
-    for (int i = 0; i < s; i++) {
+    for (int i = 0; i < s; i++) { //Salva as variáveis de todos os servidores do arquivo
       getline(serviArq, usuarioDonoId);
       getline(serviArq, nome);
       getline(serviArq, descricao);
       getline(serviArq, codigoConvite);
-
-      // Converte a string id para int
       intId = stoi(usuarioDonoId);
       
-      // Cria um novo servidor e seta os atributos
-      Servidor newServidor(intId, nome, descricao, codigoConvite, { }, { });
+      Servidor newServidor(intId, nome, descricao, codigoConvite, { }, { }); //Cadastra novo servidor com as variáveis informadas
 
-      // Obtém a quantidade de usuários
-      getline(serviArq, size);
+      getline(serviArq, size); //Verifica quantidade de usuários participantes do servidor e atualiza a var u
       u = stoi(size);
 
-      // Obtém os ids dos membros, converte para inteiro e adiciona ao servidor
-      for (int j = 0; j < u; j++) {
+      for (int j = 0; j < u; j++) { //Salva as variáveis de todos os participante do servidor
         getline(serviArq, idParticipante);
         intId = stoi(idParticipante);
         newServidor.addParticipante(intId);
       }
 
-      // Obtém a quantidade de canais
-      getline(serviArq, size);
+      getline(serviArq, size); //Verifica quantidade de canais do servidor e atualiza a var c
       c = stoi(size);
 
-      // Captura os atributos dos canais
-      for (size_t j = 0; j < c; ++j) {
+      for (size_t j = 0; j < c; ++j) { //Salva as variáveis de todos os canais do servidor
         getline(serviArq, nomeCanal);
         getline(serviArq, tipoCanal);
 
-        // Cria um novo canal com o tipo informado
-        Canal *newCanal;
+        Canal *newCanal; //Cadastra novo canal com as variáveis informadas, é feito primeiro a consulta do tipo do objeto que está na classe
         if(tipoCanal == "TEXTO"){
             newCanal = new CanalTexto(nomeCanal);
         } else if(tipoCanal == "VOZ"){
             newCanal = new CanalVoz(nomeCanal);
         }
 
-        // Obtém a quantidade de mensagens
-        getline(serviArq, size);
+        getline(serviArq, size); //Verifica quantidade de mensagens do canal e atualiza a var m
         m = stoi(size);
 
-        // Captura os atributos das mensagens
-        for (size_t k = 0; k < m; ++k) {
-          // Obtém o id de quem enviou e converte para int
+        for (size_t k = 0; k < m; ++k) { //Salva as variáveis de todos as mensagens do canal
           getline(serviArq, idMensagem);
           intId = stoi(idMensagem);
-
           getline(serviArq, dataHora);
           getline(serviArq, conteudo);
 
-          // Cria a nova mensagem e adiciona ao canal
-          Mensagem newMensagem(dataHora, intId, conteudo);
+          Mensagem newMensagem(dataHora, intId, conteudo); //Cadastra nova mensagem com as variáveis informadas
           newCanal->enviarMensagem(newMensagem);
         }
-
-        // Adiciona o canal ao servidor
-        newServidor.addCanal(newCanal);
+        newServidor.addCanal(newCanal); // Adiciona o canal ao servidor
       }
-      // Adiciona o servidor na lista
-      servidores.push_back(newServidor);
+      servidores.push_back(newServidor); // Adiciona o servidor na lista
     }
-    // Fecha o arquivo
+
     serviArq.close();  
 }
+/*Chama as demais funções para atualizar os dados do sistema*/
 void Sistema::carregar(){
     int fileSize = 0;
     ifstream usuArq("usuarios.txt");
     ifstream serviArq("servidores.txt");
 
-    // Verifica se o arquivo de usuários existe e não está vazio
-    if (usuArq) {
+    if (usuArq) { // Verifica se o arquivo de usuários existe e não está vazio
         usuArq.seekg(0, ios::end);
         fileSize = usuArq.tellg();
         if (fileSize > 0) {
-        carregarUsuarios();
+            carregarUsuarios();
         }
 
-        // Fecha o arquivo
         usuArq.close();
     }
-    // Verifica se o arquivo de servidores existe e não está vazio
-    if (serviArq) {
+    
+    if (serviArq) { // Verifica se o arquivo de servidores existe e não está vazio
         serviArq.seekg(0, ios::end);
         fileSize = serviArq.tellg();
         if (fileSize > 0) {
         carregarServidores();
         }
 
-        // Fecha o arquivo
         serviArq.close();
     }    
 }
@@ -286,12 +248,12 @@ void Sistema::novoUsuario(vector<string> _comandos){
     string email = _comandos[1];
     string senha = _comandos[2];
     string nome;
-    for(int i = 3; i < _comandos.size(); i++){nome += _comandos[i] + " ";}
-    if (this->buscarEmail(email) == false){ //Não existe email cadastrado
-        Usuario newUsuario(id, email, senha, nome);
-        usuarios.push_back(newUsuario);
-        cout << "Usuário criado!" << endl;
-    } else {cout << "Usuário já existe!" << endl;}
+    for(int i = 3; i < _comandos.size(); i++){nome += _comandos[i] + " ";} 
+        if (this->buscarEmail(email) == false){ //Caso não existe email cadastrado, cadastra novo usuário
+            Usuario newUsuario(id, email, senha, nome);
+            usuarios.push_back(newUsuario);
+            cout << "Usuário criado!" << endl;
+        } else {cout << "Usuário já existe!" << endl;}
     salvar();
 }
 
@@ -313,8 +275,8 @@ string Sistema::listUsuarios(){
 
 //**FUNÇÕES DE LOGIN**//
 
-/*Esta função recebe o email e senha do usuário, em percorre a var usuarios 
-buscando, caso encontre atualiza a var usuarioLogado para o objeto do vector usuarios correspondente*/
+/*Esta função percorre a var usuarios buscando usuario com email e senha informado, 
+ caso encontre atualiza a var usuarioLogado para o objeto do vector usuarios correspondente*/
 bool Sistema::buscarUsuario(string _email, string _senha){
     carregar();
     for(int i = 0; i < usuarios.size(); i++){
@@ -364,7 +326,7 @@ void Sistema::novoServidor(vector<string> _comandos){
     vector<Canal *> canais = { };
     vector<int> participantesID = { };
     
-    if (this->buscarNomeServidor(nome) == false){ //Não existe servidor com esse nome cadastrado
+    if (this->buscarNomeServidor(nome) == false){ //Caso não exista servidor com esse nome cadastrado é feito o cadastro
         Servidor newServidor(usuarioDonoId, nome, descricao, codigoConvite, canais, participantesID);
         newServidor.addParticipante(this->usuarioLogado.getId());
         servidores.push_back(newServidor);
@@ -375,8 +337,8 @@ void Sistema::novoServidor(vector<string> _comandos){
 
 /*Esta função chama a função buscarNomeServidor para verificar se existe um servidor
  com o nome informado no vector servidores, caso exista busca qual o servidor no vector de servidores
- e atualiza sua descrição chamando a função mudarDescricao presente na classe servidor 
- verificando também se a var usuarioLogado é o dono do servidor*/
+ e atualiza sua descrição chamando a função mudarDescricao presente na classe servidor, 
+ verifica também se a var usuarioLogado é o dono do servidor*/
 void Sistema::mudarDescricao(vector<string> _comandos){
     carregar();
     string newDescricao;
@@ -395,8 +357,8 @@ void Sistema::mudarDescricao(vector<string> _comandos){
 
 /*Esta função chama a função buscarNomeServidor para verificar se existe um servidor
  com o nome informado no vector servidores, caso exista busca qual o servidor no vector de servidores
- e atualiza sua descrição chamando a função mudarCodigoConvite presente na classe servidor 
- verificando também se a var usuarioLogado é o dono do servidor*/
+ e atualiza sua descrição chamando a função mudarCodigoConvite presente na classe servidor, 
+ verifica também se a var usuarioLogado é o dono do servidor*/
 void Sistema::mudarCodigoConvite(vector<string> _comandos){
     carregar();
     string newCodigo = " ";
@@ -419,14 +381,14 @@ string Sistema::listServidores(){
     vector<Servidor>::iterator it = servidores.begin();
     ostringstream output;
 
-    output << it->getNome() << endl;  // Percorre o vector redirecionando os nomes dos servidores para o objeto de saída
+    output << it->getNome() << endl;
     ++it;
     while (it != servidores.end()) {
         output << it->getNome();
         ++it;
     }
 
-    return output.str();  // Retorna o objeto ostringstream convertido para string
+    return output.str();
 }
 
 /*Esta função chama a função buscarNomeServidor para verificar se existe um servidor
@@ -492,7 +454,7 @@ string Sistema::buscarUsuarioId(int _id){
     return nome;
 }
 
-/*Esta função chama a função buscarUsuarioId para cada id presente no vector participantes Id
+/*Esta função chama a função buscarUsuarioId para cada id presente no vector participantesIDs
 em seguida informa o nome*/
 void Sistema::listParticipantes(){
     carregar();
@@ -505,14 +467,14 @@ void Sistema::listParticipantes(){
 
 //**FUNÇÕES CANAIS**//
 /*Verifica se já existe um canal deste tipo cadastrado no vector*/
-bool Sistema::buscarCanal(string _nome){
+bool Sistema::buscarCanal(string _nome, string _tipo){
     carregar();
     vector<Canal*> canais = this->servidorAtivo.getCanais();
     for(const auto& canal : canais){
-        if(canal->getNome() == _nome){
-            return true; //1
+        if(canal->getNome() == _nome && canal->tipoClasse() == _tipo){
+            return true;
         }   
-    }return false; //0
+    }return false;
 }
 
 /*Função que cria novo canal e insere no vector de canais do servidor ativo
@@ -526,14 +488,14 @@ void Sistema::criarCanal(vector<string> _comandos){
     for(int i = 0; i < servidores.size(); i++){if(servidores[i].getNome() == getServidorAtivo().getNome()){servidor = &servidores[i];}}
 
     if(_comandos[2] == "texto"){
-        if(buscarCanal(_comandos[1]) == false){
+        if(buscarCanal(_comandos[1], "texto") == false){
             newCanal = new CanalTexto(nome);
             servidor->addCanal(newCanal);
             cout << "Canal de texto '"<< _comandos[1] <<"' criado" << endl;
         } else {cout << "Canal de texto '"<< _comandos[1] <<"' já existe!" << endl;}
     }
     if(_comandos[2] == "voz"){
-        if(buscarCanal(_comandos[1]) == false){
+        if(buscarCanal(_comandos[1], "voz") == false){
             newCanal = new CanalVoz(nome);
             servidor->addCanal(newCanal);
             cout << "Canal de voz '"<< _comandos[1] <<"' criado" << endl;
@@ -544,21 +506,23 @@ void Sistema::criarCanal(vector<string> _comandos){
     salvar();
 }
 
+/*Entra no canal informado, antes é feita a busca se existe canal com esse nome*/
 void Sistema::entrarCanal(vector<string> _comandos){
     carregar();
     string nome = _comandos[1];
     vector<Canal*> canais = this->servidorAtivo.getCanais();
-    if(this->buscarCanal(nome) == true){ //se existe canal com esse nome
-        for(const auto& canal : canais){
+    for(const auto& canal : canais){
+        if(this->buscarCanal(nome, canal->tipoClasse()) == true){ //Se existe canal com esse nome
             if(canal->getNome() == nome){
                 this->setNomeCanalAtivo(canal->getNome());
                 cout << "Entrou no canal '" << nome << "'" << endl;
                 break;
-            }        
-        }        
-    } else{cout << "Canal '" << nome << "' não existe" << endl;}
+            }       
+        } else{cout << "Canal '" << nome << "' não existe" << endl;} 
+    }        
 }
 
+/*Entra no canal informado e preenche a var nome canal ativo com string vazia*/
 void Sistema::sairCanal(vector<string> _comandos){
     carregar();
     string vazio = " ";
@@ -566,6 +530,7 @@ void Sistema::sairCanal(vector<string> _comandos){
     cout << "Saindo do canal" << endl;
 }
 
+/*Lista canais*/
 string Sistema::listCanais(){
     carregar();
     string nome = "vazio";
@@ -573,13 +538,13 @@ string Sistema::listCanais(){
     vector<Canal*> listCanal;
     ostringstream outputT;
     ostringstream outputV;
-
+    //Busca na lista de servidores o servidor ativo e a var servidor aponta a ele
     for(int i = 0; i < servidores.size(); i++){if(servidores[i].getNome() == getServidorAtivo().getNome()){servidor = servidores[i];}}
     listCanal = servidorAtivo.getCanais();
 
     outputT << "#canais de texto";
     outputV << "#canais de voz";
-    for(int i = 0; i < listCanal.size(); i++){
+    for(int i = 0; i < listCanal.size(); i++){ //Percorre vector de canais e separa por "texto" e "voz"
         if (listCanal[i]->tipoClasse() == "texto") {
           outputT << endl << listCanal[i]->getNome();
         } else if (listCanal[i]->tipoClasse() == "voz") {
@@ -591,7 +556,7 @@ string Sistema::listCanais(){
     return outputT.str();   
 }
 
-/*Percorre verifica a var canalAtivo e chama a função enviarMensagem
+/*Verifica a var canalAtivo e chama a função enviarMensagem
 presente na classe Canal e implementada nas classes CanalTexto e CanalVoz*/
 void Sistema::enviarMensagem(vector<string> _comandos){
     carregar();

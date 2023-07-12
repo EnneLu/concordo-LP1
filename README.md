@@ -15,7 +15,6 @@ Parte 2:
 
 Parte 3:
 - Todas as funções foram implementadas
-- Existe 3 modelos de script com usuários e informações diferentes para testar funcionamento dos arquivos
 
 Dificuldades encontradas:
-- Solucionar vazamento de dados
+- Tratar vazamento de dados

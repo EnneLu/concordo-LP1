@@ -13,7 +13,8 @@ vector<Mensagem> CanalTexto::getMensagens(){return this->mensagens;}
 
 void CanalTexto::setMensagens(vector<Mensagem> _mensagens){if(!_mensagens.empty()) this->mensagens = _mensagens;}
 
-void CanalTexto::enviarMensagem(Mensagem _mensagem){
+/*Adicionar mensagem no vector*/
+void CanalTexto::enviarMensagem(Mensagem _mensagem){ 
     mensagens.push_back(_mensagem);
 }
 
@@ -27,14 +28,15 @@ string CanalTexto::buscarUsuarioId(vector<Usuario> _usuarios, int _id){
     return nome;
 }
 
+/*Imprimir mensagens do vector*/
 string CanalTexto::imprimirMensagem(vector<Usuario> _usuarios){
     ostringstream mensagem;
     string nome;
-    // Buscar nome do usuário de acordo com o id
+    
     if(!mensagens.empty()){
         for(int i = 0; i < mensagens.size(); i++){
-            nome = buscarUsuarioId(_usuarios, mensagens[i].getEnviadaPor());
-            mensagem << nome << mensagens[i].getDataHora() << mensagens[i].getConteudo() << endl;
+            nome = buscarUsuarioId(_usuarios, mensagens[i].getEnviadaPor()); // Buscar nome do usuário de acordo com o id
+            mensagem << nome << mensagens[i].getDataHora() << mensagens[i].getConteudo() << endl; 
         }
     } else{
         mensagem << "Sem mensagens para exibir" << endl;
@@ -44,6 +46,6 @@ string CanalTexto::imprimirMensagem(vector<Usuario> _usuarios){
     return mensagem.str();
 }
 
-vector<Mensagem> CanalTexto::getMensagem(){return mensagens;}
+vector<Mensagem> CanalTexto::getMensagem(){return mensagens;} /*Retorna a variável mensagens*/
 
-string CanalTexto::tipoClasse(){return "texto";}
+string CanalTexto::tipoClasse(){return "texto";} /*Informa que a classe é canal de texto*/
